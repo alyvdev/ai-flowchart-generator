@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI ilə blok-sxem alqoritmləri</title>
+    <link rel="shortcut icon" href="./Assets/logo.png" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./CSS/style.css" />
+  </head>
+  <body class="bg-[--background] text-[--text-primary]">
+    <!-- Mobile Header -->
+    <div
+      class="md:hidden bg-[--surface-1] border-b border-[--border-color] p-4 flex items-center justify-between"
+    >
+      <h1 class="text-lg font-bold">Blox Sxem Alqoritma</h1>
+      <div class="flex items-center gap-2">
+        <button
+          id="mobile-chat-toggle"
+          class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            ></path>
+          </svg>
+        </button>
+        <button
+          id="mobile-menu-toggle"
+          class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row h-full md:h-screen overflow-hidden">
+      <aside
+        id="history-panel"
+        class="hidden md:flex w-64 flex-shrink-0 bg-[--surface-1] p-4 flex-col border-r border-[--border-color]"
+      >
+        <div
+          class="w-12 h-12 bg-white rounded-xl mb-4 flex items-center justify-center shadow-lg p-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            fill="#4F46E5"
+            width="32"
+            height="32"
+            version="1.1"
+            viewBox="0 0 295.239 295.239"
+            xml:space="preserve"
+          >
+            <g>
+              <g>
+                <g>
+                  <path
+                    d="M228.572,123.81v14.286h-51.257l-24.933-12.467v-16.105h7.143c6.562,0,11.905-5.338,11.905-11.905     c0-3.876-1.89-7.29-4.762-9.462v-5.062c6.081-5.438,9.524-13.029,9.524-21.186c0-15.757-12.814-28.571-28.571-28.571     c-15.757,0-28.571,12.814-28.571,28.571c0,8.157,3.443,15.752,9.524,21.186v5.062c-2.871,2.176-4.762,5.59-4.762,9.462     c0,6.567,5.343,11.905,11.905,11.905h7.143v16.105l-34.459,17.228l34.457,17.229v16.105H38.096v-14.286h28.571V123.81H0.001     v38.095h28.571v14.286v4.762V200H0.001v38.095h66.667V200H38.096v-14.286h104.762V200h-28.571v38.095h28.571v19.048h-9.524     c-10.505,0-19.048,8.543-19.048,19.048s8.543,19.048,19.048,19.048h28.571c10.505,0,19.048-8.543,19.048-19.048     s-8.543-19.048-19.048-19.048h-9.524v-19.048h28.571V200h-28.571v-14.286v-9.524v-16.105l24.933-12.467h51.257v14.286h28.571     v38.771c-8.19,2.129-14.286,9.519-14.286,18.371c0,10.505,8.543,19.048,19.048,19.048c10.505,0,19.048-8.543,19.048-19.048     c0-8.852-6.095-16.243-14.286-18.371v-38.771h28.573V123.81H228.572z M57.144,209.523v19.048H9.524v-19.048H57.144z      M9.524,152.381v-19.048h47.619v19.048H9.524z M147.62,42.857c10.505,0,19.048,8.543,19.048,19.048     c0,5.957-2.781,11.476-7.633,15.143l-1.89,1.424v7.243h-4.762v-10.4c5.529-1.971,9.524-7.21,9.524-13.41     c0-7.876-6.41-14.286-14.286-14.286c-7.876,0-14.286,6.41-14.286,14.286c0,6.2,3.995,11.438,9.524,13.41v10.4h-4.762v-7.243     l-1.89-1.429c-4.852-3.662-7.633-9.181-7.633-15.138C128.571,51.4,137.115,42.857,147.62,42.857z M152.381,61.905     c0,2.629-2.138,4.762-4.762,4.762c-2.624,0-4.762-2.134-4.762-4.762c0-2.629,2.138-4.762,4.762-4.762     C150.243,57.143,152.381,59.276,152.381,61.905z M135.714,100c-1.314,0-2.381-1.071-2.381-2.381s1.067-2.381,2.381-2.381h23.81     c1.314,0,2.381,1.071,2.381,2.381S160.839,100,159.524,100H135.714z M161.906,266.666c5.252,0.001,9.524,4.272,9.524,9.524     s-4.271,9.524-9.524,9.524h-28.571c-5.252,0-9.524-4.271-9.524-9.524c0-5.252,4.271-9.524,9.524-9.524H161.906z M171.43,209.523     v19.048h-47.619v-19.048H171.43z M147.62,151.819l-17.924-8.962l17.924-8.962l17.924,8.962L147.62,151.819z M271.43,219.048     c0,5.252-4.271,9.524-9.524,9.524s-9.524-4.271-9.524-9.524c0-5.253,4.271-9.524,9.524-9.524S271.43,213.795,271.43,219.048z      M285.714,152.381h-47.619v-19.048h0h47.619V152.381z"
+                  />
+                  <path
+                    d="M85.714,28.571c6.2,0,11.438-3.995,13.41-9.524H117.6c-12.271,8.624-20.69,22.353-22.119,38.096h-9.767v28.571h28.571     V57.143h-9.243c2.381-21.395,20.557-38.095,42.576-38.095c22.019,0,40.2,16.7,42.576,38.095h-9.243v28.571h28.571V57.143h-9.767     c-1.429-15.743-9.843-29.471-22.119-38.095h18.476c1.971,5.529,7.21,9.524,13.41,9.524c7.876,0,14.286-6.41,14.286-14.286     C223.809,6.41,217.401,0,209.524,0c-6.2,0-11.438,3.995-13.41,9.524h-96.99C97.152,3.995,91.915,0,85.714,0     c-7.876,0-14.286,6.41-14.286,14.286C71.428,22.162,77.839,28.571,85.714,28.571z M104.763,76.19h-9.524v-9.524h9.524V76.19z      M190.477,66.666h9.524v9.524h-9.524V66.666z M209.524,9.524c2.624,0,4.762,2.133,4.762,4.762c0,2.629-2.138,4.762-4.762,4.762     c-2.624,0-4.762-2.133-4.762-4.762C204.763,11.657,206.901,9.524,209.524,9.524z M85.714,9.524c2.624,0,4.762,2.133,4.762,4.762     c0,2.629-2.138,4.762-4.762,4.762c-2.624,0-4.762-2.133-4.762-4.762C80.953,11.657,83.091,9.524,85.714,9.524z"
+                  />
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <button
+          id="new-chat-btn"
+          class="w-full mb-4 bg-[--accent-color] text-[--accent-text] font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity"
+        >
+          + Yeni Söhbət
+        </button>
+        <div class="flex-grow overflow-y-auto pr-2">
+          <h2 class="text-sm font-semibold text-[--text-secondary] mb-2">
+            Tarixçə
+          </h2>
+          <ul id="history-list" class="space-y-2"></ul>
+        </div>
+        <div class="mt-4 pt-4 border-t border-[--border-color]">
+          <button
+            id="api-settings-btn"
+            class="w-full text-left p-2 rounded-md hover:bg-gray-700 transition-colors duration-200 text-sm flex items-center gap-2"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            API Tənzimləmələri
+          </button>
+        </div>
+        <footer class="text-center mt-4 text-[--text-secondary] text-xs">
+          <p>Blok-sxemlər Mermaid.js ilə hazırlanır.</p>
+          <p>ALYV Dev</p>
+        </footer>
+      </aside>
+
+      <main class="flex-grow flex flex-col min-h-0 overflow-y-auto">
+        <div class="p-4 md:p-6">
+          <div>
+            <div
+              class="bg-[--surface-1] border border-[--border-color] rounded-xl p-6 shadow-lg flex flex-col"
+            >
+              <label
+                for="userInput"
+                class="block text-lg font-semibold text-[--text-primary] mb-3"
+                >1. Alqoritmin təsviri</label
+              >
+              <textarea
+                id="userInput"
+                class="w-full p-4 md:p-5 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary] resize-y text-base h-[220px] md:h-[240px] leading-relaxed"
+                placeholder="Məsələn: İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi..."
+              ></textarea>
+
+              <div class="mt-6 flex flex-col md:flex-row gap-4">
+                <div class="flex-grow">
+                  <label
+                    for="lang-select"
+                    class="block text-base font-semibold text-[--text-primary] mb-3"
+                    >Proqramlaşdırma dilini seçin</label
+                  >
+                  <select
+                    id="lang-select"
+                    class="w-full p-3 md:p-4 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none text-base min-h-[48px] md:min-h-[52px]"
+                  >
+                    <option value="C#">C#</option>
+                    <option value="C++">C++</option>
+                    <option value="CSS">CSS</option>
+                    <option value="Go">Go</option>
+                    <option value="HTML">HTML</option>
+                    <option value="Java">Java</option>
+                    <option selected value="JavaScript">JavaScript</option>
+                    <option value="JSON">JSON</option>
+                    <option value="Kotlin">Kotlin</option>
+                    <option value="PHP">PHP</option>
+                    <option value="Python">Python</option>
+                    <option value="Ruby">Ruby</option>
+                    <option value="Rust">Rust</option>
+                    <option value="SQL">SQL</option>
+                    <option value="Swift">Swift</option>
+                    <option value="TypeScript">TypeScript</option>
+                    <option value="XML">XML</option>
+                    <option value="YAML">YAML</option>
+                  </select>
+                </div>
+                <div class="flex items-end md:items-end">
+                  <button
+                    id="generateBtn"
+                    class="w-full md:w-auto bg-[--accent-color] text-[--accent-text] font-bold py-3 md:py-4 px-6 md:px-8 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center whitespace-nowrap text-base min-h-[48px] md:min-h-[52px]"
+                  >
+                    <span id="btn-text">Generasiya et</span>
+                    <div
+                      id="loader"
+                      class="loader hidden ml-3"
+                      style="width: 20px; height: 20px; border-top-color: black"
+                    ></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 md:p-6 pt-0 flex-grow min-h-0">
+          <div
+            class="bg-[--surface-1] border border-[--border-color] rounded-xl shadow-lg flex flex-col h-full min-h-[400px] md:min-h-96"
+          >
+            <div
+              class="p-4 flex justify-between items-center border-b border-[--border-color]"
+            >
+              <h2 class="text-lg font-semibold">Blok-sxem</h2>
+              <div id="canvas-controls" class="flex items-center gap-2 hidden">
+                <button
+                  id="zoom-in"
+                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+                <button
+                  id="zoom-out"
+                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+                <button
+                  id="reset-pan"
+                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 2v6h6"></path>
+                    <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                    <path d="M21 22v-6h-6"></path>
+                    <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex-grow overflow-hidden relative p-0 min-h-0 h-[400px] md:h-auto"
+            >
+              <div
+                id="output"
+                class="absolute inset-0 w-full h-full text-center text-[--text-secondary] flex items-center justify-center overflow-auto"
+                style="cursor: grab"
+              >
+                <p id="placeholder-text">Blok-sxeminiz burada göstəriləcək.</p>
+                <div id="error-message" class="text-red-400 hidden"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Chat section removed - accessible via mobile header -->
+    </div>
+
+    <div
+      id="details-modal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50"
+    >
+      <div
+        class="bg-[#222] rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
+      >
+        <div
+          class="p-4 border-b border-gray-600 flex justify-between items-center"
+        >
+          <h3 id="modal-title" class="text-xl font-bold">Addımın İzahı</h3>
+          <button id="modal-close" class="text-gray-400 hover:text-white">
+            &times;
+          </button>
+        </div>
+        <div id="modal-content" class="p-6 overflow-y-auto text-gray-300"></div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      id="mobile-menu-overlay"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
+    >
+      <div
+        class="fixed left-0 top-0 h-full w-80 bg-[--surface-1] transform -translate-x-full transition-transform duration-300 ease-in-out"
+        id="mobile-menu"
+      >
+        <div class="p-4 border-b border-[--border-color]">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Menyu</h2>
+            <button
+              id="close-mobile-menu"
+              class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-4 space-y-4">
+          <button
+            id="mobile-new-chat"
+            class="w-full text-left p-3 bg-[--accent-color] text-[--accent-text] rounded-lg font-bold hover:opacity-90 transition-opacity flex items-center gap-2"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Yeni Söhbət
+          </button>
+
+          <button
+            id="mobile-api-settings"
+            class="w-full text-left p-3 rounded-lg hover:bg-[--surface-2] transition-colors flex items-center gap-2"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            API Tənzimləmələri
+          </button>
+        </div>
+
+        <div class="p-4 border-t border-[--border-color]">
+          <h3 class="text-sm font-semibold text-[--text-secondary] mb-3">
+            Tarixçə
+          </h3>
+          <div
+            id="mobile-history-list"
+            class="space-y-2 max-h-96 overflow-y-auto"
+          >
+            <!-- History items will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Chat Overlay -->
+    <div
+      id="mobile-chat-overlay"
+      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
+    >
+      <div
+        class="fixed bottom-0 left-0 right-0 h-3/4 bg-[--surface-1] transform translate-y-full transition-transform duration-300 ease-in-out rounded-t-xl"
+        id="mobile-chat"
+      >
+        <div class="p-4 border-b border-[--border-color]">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Alqoritmi müzakirə edin</h2>
+            <button
+              id="close-mobile-chat"
+              class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="h-full flex flex-col pb-16">
+          <div
+            id="mobile-chat-messages"
+            class="flex-grow overflow-y-auto p-4 space-y-4"
+          >
+            <!-- Chat messages will be populated here -->
+          </div>
+
+          <div class="p-4 border-t border-[--border-color]">
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="mobile-chat-input"
+                class="flex-grow p-3 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary]"
+                placeholder="Sualınızı yazın..."
+              />
+              <button
+                id="mobile-send-btn"
+                class="px-4 py-3 bg-[--accent-color] text-[--accent-text] rounded-lg hover:opacity-90 transition-opacity font-bold"
+              >
+                Göndər
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      id="details-modal"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-2 md:p-4 hidden z-50"
+    >
+      <div
+        class="bg-[#222] rounded-lg shadow-xl w-full max-w-full md:max-w-2xl max-h-[95vh] md:max-h-[80vh] flex flex-col"
+      >
+        <div
+          class="p-4 border-b border-gray-600 flex justify-between items-center"
+        >
+          <h3 id="modal-title" class="text-xl font-bold">Addımın İzahı</h3>
+          <button id="modal-close" class="text-gray-400 hover:text-white">
+            &times;
+          </button>
+        </div>
+        <div id="modal-content" class="p-6 overflow-y-auto text-gray-300">
+          <!-- Detailed content will be injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- API Settings Modal -->
+    <div
+      id="api-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-[--surface-1] border border-[--border-color] rounded-xl p-4 md:p-6 w-full max-w-full md:max-w-md mx-2 md:mx-4"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-semibold flex items-center gap-2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            API Tənzimləmələri
+          </h2>
+          <button
+            id="close-api-modal"
+            class="p-1 rounded hover:bg-gray-700 transition-colors"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label
+              for="api-key-input"
+              class="block text-sm font-medium text-[--text-primary] mb-2"
+            >
+              Google Gemini API Açarı
+            </label>
+            <input
+              type="password"
+              id="api-key-input"
+              class="w-full p-3 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary]"
+              placeholder="API açarınızı daxil edin..."
+            />
+            <div class="flex items-center justify-between mt-2">
+              <button
+                id="toggle-api-visibility"
+                class="text-xs text-[--text-secondary] hover:text-[--text-primary] transition-colors"
+              >
+                Göstər/Gizlət
+              </button>
+              <div id="api-status" class="text-xs"></div>
+            </div>
+          </div>
+
+          <div
+            class="bg-[--surface-2] border border-[--border-color] rounded-lg p-4"
+          >
+            <h3
+              class="text-sm font-semibold text-[--text-primary] mb-2 flex items-center gap-2"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="m12 2 0 2"></path>
+                <path d="m12 20 0 2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="m2 12 2 0"></path>
+                <path d="m20 12 2 0"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+              API Açarı Necə Əldə Edilir?
+            </h3>
+            <ol class="text-xs text-[--text-secondary] space-y-2">
+              <li class="flex items-start gap-2">
+                <span
+                  class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                  >1</span
+                >
+                <span
+                  ><a
+                    href="https://makersuite.google.com/app/apikey"
+                    target="_blank"
+                    class="text-blue-400 hover:underline"
+                    >Google AI Studio</a
+                  >
+                  saytına daxil olun</span
+                >
+              </li>
+              <li class="flex items-start gap-2">
+                <span
+                  class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                  >2</span
+                >
+                <span>Google hesabınızla giriş edin</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span
+                  class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                  >3</span
+                >
+                <span>"Create API Key" düyməsini basın</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span
+                  class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                  >4</span
+                >
+                <span>Yaradılan API açarını kopyalayın</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span
+                  class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
+                  >5</span
+                >
+                <span>Yuxarıdakı sahəyə yapışdırın</span>
+              </li>
+            </ol>
+            <div
+              class="mt-3 p-2 bg-yellow-900/20 border border-yellow-600/30 rounded text-xs text-yellow-300"
+            >
+              <strong>⚠️ Qeyd:</strong> API açarınız yalnız sizin brauzerdə
+              saxlanılır və heç yerə göndərilmir.
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              id="save-api-key"
+              class="flex-1 bg-[--accent-color] text-[--accent-text] font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Saxla
+            </button>
+            <button
+              id="test-api-key"
+              class="flex-1 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+            >
+              Test Et
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./JS/script.js"></script>
+  </body>
+</html>
