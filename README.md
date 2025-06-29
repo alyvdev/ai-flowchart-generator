@@ -9,7 +9,7 @@ Bu layihə süni intellekt (Google Gemini AI) istifadə edərək alqoritm təsvi
 ### 🎯 AI-Powered Blok-Sxem Generasiyası
 
 - **25+ Proqramlaşdırma Dili Dəstəyi**: JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Rust və s.
-- **Google Gemini 2.0 Flash AI**: Ən son AI texnologiyası ilə dəqiq blok-sxem yaradılması
+- **Google Gemini 2.0 Flash AI**: AI texnologiyası ilə dəqiq blok-sxem yaradılması
 - **Mermaid.js İnteqrasiyası**: Peşəkar və interaktiv diaqramlar
 
 ### 🖥️ İstifadəçi Dostu İnterfeys
@@ -208,7 +208,7 @@ Bu layihə MIT Lisenziyası altında paylaşılır. Ətraflı məlumat üçün [
 
 ## 👥 Müəlliflər
 
-- **[Sizin Adınız]** - _İlkin İnkişaf_ - [@alyvdev](https://github.com/alyvdev)
+- **[Ali Aliyev]** - _İlkin İnkişaf_ - [@alyvdev](https://github.com/alyvdev)
 
 ## 🙏 Təşəkkürlər
 
@@ -219,47 +219,13 @@ Bu layihə MIT Lisenziyası altında paylaşılır. Ətraflı məlumat üçün [
 
 ## 📞 Əlaqə
 
-- **Email**: your-email@example.com
+- **Email**: alyvdev@gmail.com
 - **GitHub**: [@alyvdev](https://github.com/alyvdev)
-- **LinkedIn**: [Your Name](https://linkedin.com/in/alyvofficial)
+- **LinkedIn**: [Ali Aliyev](https://linkedin.com/in/alyvofficial)
 
 ## 🐛 Problemlər
 
 Problem tapdınızsa və ya təklif vermək istəyirsinizsə, [Issues](https://github.com/alyvdev/ai-flowchart-generator/issues) bölməsində bildirin.
-
-## 📈 Yol Xəritəsi
-
-- [ ] Daha çox proqramlaşdırma dili dəstəyi
-- [ ] Blok-sxemləri PDF/PNG olaraq export etmək
-- [ ] İstifadəçi hesabları və bulud yaddaş
-- [ ] Komanda üçün paylaşım xüsusiyyətləri
-- [ ] Mobil tətbiq versiyası
-- [ ] Çoxdilli dəstək (İngilis, Türk, Rus)
-
-## 🔒 Təhlükəsizlik
-
-### API Açarı Təhlükəsizliyi
-
-⚠️ **Vacib**: Production mühitində API açarını birbaşa frontend kodunda saxlamayın. Bunun əvəzinə:
-
-1. **Backend API yaradın** və API açarını server tərəfində saxlayın
-2. **Environment variables** istifadə edin
-3. **Rate limiting** tətbiq edin
-4. **CORS** konfiqurasiya edin
-
-### Tövsiyə edilən Production Setup
-
-```javascript
-// Production üçün backend endpoint istifadə edin
-const apiUrl = "/api/generate-flowchart";
-
-// API açarını backend-də saxlayın
-const response = await fetch(apiUrl, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ prompt, language }),
-});
-```
 
 ## 🚀 Production Deployment
 
