@@ -208,7 +208,7 @@ Bu layihə MIT Lisenziyası altında paylaşılır. Ətraflı məlumat üçün [
 
 ## 👥 Müəlliflər
 
-- **[Ali Aliyev]** - _İlkin İnkişaf_ - [@alyvdev](https://github.com/alyvdev)
+- **Ali Aliyev** - _İlkin İnkişaf_ - [@alyvdev](https://github.com/alyvdev)
 
 ## 🙏 Təşəkkürlər
 
