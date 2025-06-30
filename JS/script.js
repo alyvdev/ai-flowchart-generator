@@ -1111,48 +1111,4 @@ mobileChatInput.addEventListener("keydown", (e) => {
   }
 });
 
-// Touch gestures for mobile
-let touchStartX = 0;
-let touchStartY = 0;
-
-document.addEventListener("touchstart", (e) => {
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-});
-
-document.addEventListener("touchend", (e) => {
-  if (!e.changedTouches[0]) return;
-
-  const touchEndX = e.changedTouches[0].clientX;
-  const touchEndY = e.changedTouches[0].clientY;
-  const deltaX = touchEndX - touchStartX;
-  const deltaY = touchEndY - touchStartY;
-
-  // Swipe right to open menu (only on mobile)
-  if (window.innerWidth < 768 && deltaX > 100 && Math.abs(deltaY) < 100) {
-    if (mobileMenuOverlay.classList.contains("hidden")) {
-      toggleMobileMenu();
-    }
-  }
-
-  // Swipe left to close menu
-  if (window.innerWidth < 768 && deltaX < -100 && Math.abs(deltaY) < 100) {
-    if (!mobileMenuOverlay.classList.contains("hidden")) {
-      toggleMobileMenu();
-    }
-  }
-
-  // Swipe up to open chat
-  if (window.innerWidth < 768 && deltaY < -100 && Math.abs(deltaX) < 100) {
-    if (mobileChatOverlay.classList.contains("hidden")) {
-      toggleMobileChat();
-    }
-  }
-
-  // Swipe down to close chat
-  if (window.innerWidth < 768 && deltaY > 100 && Math.abs(deltaX) < 100) {
-    if (!mobileChatOverlay.classList.contains("hidden")) {
-      toggleMobileChat();
-    }
-  }
-});
+// Touch gestures for mobile removed - only icon-based navigation allowed
