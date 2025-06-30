@@ -751,6 +751,17 @@ window.showDetails = (nodeId) => {
 const generateFlowchart = async () => {
   const prompt = userInput.value.trim();
   const selectedLang = langSelect.value;
+
+  // Check if API key exists
+  const apiKey = getApiKey();
+  if (!apiKey || apiKey.trim() === "") {
+    // Show API key modal
+    apiModal.classList.remove("hidden");
+    loadApiKeyFromStorage();
+    updateApiStatus("⚠️ API açarı tələb olunur", "warning");
+    return;
+  }
+
   if (!prompt) {
     errorMessage.textContent = "Zəhmət olmasa, bir təsvir daxil edin.";
     errorMessage.classList.remove("hidden");
