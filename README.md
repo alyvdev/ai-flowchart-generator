@@ -1,91 +1,87 @@
-# 🤖 AI Blok-Sxem Alqoritm Generatoru
+# AI Blok-Sxem Alqoritm Generatoru
 
-**AI ilə Alqoritm Blok-Sxemlərinin Avtomatik Yaradılması**
+Bu layihə alqoritm təsvirlərindən avtomatik blok-sxemlər yaradan veb tətbiqidir. Google Gemini AI istifadə edərək sadə mətn təsvirlərini peşəkar diaqramlara çevirir.
 
-Bu layihə süni intellekt (Google Gemini AI) istifadə edərək alqoritm təsvirlərindən interaktiv blok-sxemlər yaradan müasir veb tətbiqidir. İstifadəçilər sadəcə alqoritmlərin təsvirini daxil edərək peşəkar blok-sxemlər əldə edə və onlar haqqında AI ilə söhbət edə bilərlər.
+## Nə edir?
 
-## ✨ Əsas Xüsusiyyətlər
+Alqoritminizi sadə dillə yazırsınız, proqramlaşdırma dilini seçirsiniz və sistem sizin üçün blok-sxem yaradır. Yaradılan diaqramla interaktiv şəkildə işləyə və AI ilə söhbət edə bilərsiniz.
 
-### 🎯 AI-Powered Blok-Sxem Generasiyası
+## Əsas xüsusiyyətlər
 
-- **25+ Proqramlaşdırma Dili Dəstəyi**: JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Rust və s.
-- **Google Gemini 2.0 Flash AI**: AI texnologiyası ilə dəqiq blok-sxem yaradılması
-- **Mermaid.js İnteqrasiyası**: Peşəkar və interaktiv diaqramlar
+**Blok-sxem yaradılması**
 
-### 🖥️ İstifadəçi Dostu İnterfeys
+- 25+ proqramlaşdırma dili dəstəyi (JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Rust və s.)
+- Google Gemini 2.0 Flash AI texnologiyası
+- Mermaid.js ilə peşəkar diaqramlar
 
-- **Qaranlıq Tema**: Müasir və gözə rahat dizayn
-- **Üç Panelli Layout**:
-  - Sol tərəf: Söhbət tarixçəsi
-  - Mərkəz: Alqoritm girişi və blok-sxem
-  - Sağ tərəf: AI söhbət paneli
-- **Responsive Dizayn**: Bütün cihazlarda mükəmməl görünüş
+**İstifadəçi interfeysi**
 
-### 🔍 İnteraktiv Blok-Sxem Xüsusiyyətləri
+- Qaranlıq tema
+- Üç panelli layout: tarixçə, əsas sahə, söhbət
+- Bütün cihazlarda işləyir
 
-- **Pan & Zoom**: Blok-sxemləri böyüdüb kiçildə və hərəkət etdirə bilərsiniz
-- **Klikləmə Detalları**: Hər bloka klik edərək ətraflı izahat əldə edin
-- **Kod Nümunələri**: Hər addım üçün müvafiq proqramlaşdırma dili kodları
+**İnteraktiv xüsusiyyətlər**
 
-### 💬 AI Söhbət Sistemi
+- Diaqramları böyüdüb kiçildə bilərsiniz
+- Bloklara klik edərək ətraflı məlumat əldə edin
+- Hər addım üçün kod nümunələri
 
-- **Kontekstual Söhbət**: Yaradılmış blok-sxem haqqında suallar verin
-- **Markdown Dəstəyi**: Zəngin mətn formatlaması
-- **Real-time Cavablar**: Sürətli və dəqiq AI cavabları
+**AI söhbət**
 
-### 📚 Sessiya İdarəetməsi
+- Yaradılan blok-sxem haqqında suallar verin
+- Markdown formatında cavablar
+- Real-time əlaqə
 
-- **Avtomatik Yadda Saxlama**: Bütün işləriniz brauzer yaddaşında saxlanılır
-- **Çoxlu Sessiya**: Eyni vaxtda müxtəlif layihələr üzərində işləyin
-- **Ağıllı Adlandırma**: Sessiyanın adı avtomatik olaraq alqoritm təsvirindən yaradılır
-- **Düzəltmə və Silmə**: Sessiya adlarını dəyişdirin və ya sessiyanı silin
+**Sessiya idarəetməsi**
 
-## 🛠️ Texnologiyalar
+- İşləriniz avtomatik saxlanılır
+- Çoxlu layihə üzərində işləyin
+- Sessiya adlarını dəyişdirin
 
-### Frontend
+## Texnologiyalar
 
-- **HTML5** - Struktur
-- **CSS3** - Stilizasiya (Custom CSS Variables)
-- **JavaScript (ES6+)** - Funksionallıq
-- **Tailwind CSS** - Utility-first CSS framework
+**Frontend**
 
-### Kitabxanalar
+- HTML5, CSS3, JavaScript (ES6+)
+- Tailwind CSS
 
-- **Mermaid.js** - Diaqram yaradılması
-- **SVG Pan Zoom** - İnteraktiv zoom və pan
-- **Marked.js** - Markdown parser
-- **Google Fonts (Inter)** - Tipografiya
+**Kitabxanalar**
 
-### AI & API
+- Mermaid.js (diaqram yaradılması)
+- SVG Pan Zoom (interaktiv zoom)
+- Marked.js (markdown parser)
+- Google Fonts (Inter)
 
-- **Google Gemini 2.0 Flash API** - AI blok-sxem generasiyası
-- **REST API** - AI ilə əlaqə
+**AI & API**
 
-## 📋 Quraşdırma
+- Google Gemini 2.0 Flash API
+- REST API
 
-### Tələblər
+## Quraşdırma
 
-- Modern veb brauzer (Chrome, Firefox, Safari, Edge)
-- İnternet bağlantısı (AI API üçün)
+**Tələblər**
+
+- Modern veb brauzer
+- İnternet bağlantısı
 - Google Gemini API açarı
 
-### Lokal Quraşdırma
+**Lokal quraşdırma**
 
-1. **Layihəni klonlayın**
+1. Layihəni klonlayın
 
 ```bash
 git clone https://github.com/alyvdev/ai-flowchart-generator.git
 cd ai-flowchart-generator
 ```
 
-2. **API açarını konfiqurasiya edin**
+2. API açarını konfiqurasiya edin
 
 ```javascript
 // index.html faylında API açarını dəyişdirin
 const apiKey = "YOUR_GEMINI_API_KEY_HERE";
 ```
 
-3. **Lokal server başladın**
+3. Lokal server başladın
 
 ```bash
 # Python ilə
@@ -98,182 +94,116 @@ npx serve .
 php -S localhost:8000
 ```
 
-4. **Brauzerdə açın**
+4. Brauzerdə açın: `http://localhost:8000`
 
-```
-http://localhost:8000
-```
+## Konfigurasiya
 
-## 🔧 Konfigurasiya
-
-### Google Gemini API Açarı Əldə Etmək
+**Google Gemini API açarı əldə etmək**
 
 1. [Google AI Studio](https://makersuite.google.com/app/apikey) saytına daxil olun
 2. Yeni API açarı yaradın
-3. API açarını `index.html` faylında dəyişdirin:
+3. API açarını `index.html` faylında dəyişdirin
 
-```javascript
-const apiKey = "YOUR_GEMINI_API_KEY_HERE";
-```
+**Dəstəklənən proqramlaşdırma dilləri**
 
-### Dəstəklənən Proqramlaşdırma Dilləri
+JavaScript, TypeScript, Python, Java, Kotlin, C++, C#, PHP, Ruby, Go, Rust, Swift, SQL, HTML/CSS və daha çoxu.
 
-Tətbiq aşağıdakı proqramlaşdırma dillərini dəstəkləyir:
+## İstifadə təlimatı
 
-- JavaScript, TypeScript
-- Python
-- Java, Kotlin
-- C++, C#
-- PHP
-- Ruby
-- Go, Rust
-- Swift
-- SQL
-- HTML/CSS
-- və daha çoxu...
+1. **Alqoritm təsviri daxil edin**
+   Məsələn: "İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi"
 
-## 📖 İstifadə Təlimatı
+2. **Proqramlaşdırma dilini seçin**
+   Dropdown menyudan istədiyiniz dili seçin
 
-### 1. Alqoritm Təsviri Daxil Edin
+3. **Blok-sxem yaradın**
+   "Generasiya et" düyməsini basın
 
-```
-Məsələn: İstifadəçidən alınan ədədin cüt və ya tək olduğunu
-yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi
-```
+4. **İnteraktiv xüsusiyyətlərdən istifadə edin**
 
-### 2. Proqramlaşdırma Dilini Seçin
+   - Diaqramı böyüdüb kiçildin
+   - Bloklara klik edərək ətraflı məlumat əldə edin
+   - AI ilə söhbət edin
 
-Dropdown menyudan istədiyiniz proqramlaşdırma dilini seçin.
+5. **Sessiyanı idarə edin**
+   - Yeni sessiya yaradın
+   - Sessiya adını dəyişdirin
+   - Köhnə sessiyaları silin
 
-### 3. Blok-Sxem Yaradın
+## Töhfə vermək
 
-"Generasiya et" düyməsini basın və AI sizin üçün blok-sxem yaradacaq.
+Layihəyə töhfə vermək istəyirsinizsə:
 
-### 4. İnteraktiv Xüsusiyyətlərdən İstifadə Edin
+1. Fork edin
+2. Feature branch yaradın (`git checkout -b feature/amazing-feature`)
+3. Dəyişikliklərinizi commit edin (`git commit -m 'Add amazing feature'`)
+4. Branch-ı push edin (`git push origin feature/amazing-feature`)
+5. Pull Request açın
 
-- Blok-sxemi böyüdüb kiçildin
-- Bloklara klik edərək ətraflı məlumat əldə edin
-- AI ilə söhbət edin
-
-### 5. Sessiyanı İdarə Edin
-
-- Yeni sessiya yaradın
-- Sessiya adını dəyişdirin
-- Köhnə sessiyaları silin
-
-## 🎨 Xüsusiyyətlər
-
-### Tema Dəyişkənləri
-
-```css
-:root {
-  --background: #000000;
-  --surface-1: #111111;
-  --surface-2: #1f1f1f;
-  --surface-3: #2c2c2c;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --border-color: #3a3a3a;
-  --accent-color: #ffffff;
-  --accent-text: #000000;
-}
-```
-
-### Responsive Breakpoints
-
-- **Desktop**: 1024px+
-- **Tablet**: 768px - 1023px
-- **Mobile**: 320px - 767px
-
-## 🤝 Töhfə Vermək
-
-Bu layihəyə töhfə vermək istəyirsinizsə:
-
-1. **Fork edin**
-2. **Feature branch yaradın** (`git checkout -b feature/amazing-feature`)
-3. **Dəyişikliklərinizi commit edin** (`git commit -m 'Add amazing feature'`)
-4. **Branch-ı push edin** (`git push origin feature/amazing-feature`)
-5. **Pull Request açın**
-
-### Töhfə Qaydaları
+**Töhfə qaydaları**
 
 - Kod standartlarına riayət edin
 - Commit mesajlarını aydın yazın
 - Dokumentasiyanı yeniləyin
 - Test edin
 
-## 📝 Lisenziya
+## Lisenziya
 
 Bu layihə MIT Lisenziyası altında paylaşılır. Ətraflı məlumat üçün [LICENSE](LICENSE) faylına baxın.
 
-## 👥 Müəlliflər
+## Müəllif
 
-- **Ali Aliyev** - _İlkin İnkişaf_ - [@alyvdev](https://github.com/alyvdev)
+Ali Aliyev - [@alyvdev](https://github.com/alyvdev)
 
-## 🙏 Təşəkkürlər
+## Təşəkkürlər
 
 - [Google Gemini AI](https://ai.google.dev/) - AI API
 - [Mermaid.js](https://mermaid.js.org/) - Diaqram kitabxanası
 - [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
 - [SVG Pan Zoom](https://github.com/bumbu/svg-pan-zoom) - İnteraktiv zoom
 
-## 📞 Əlaqə
+## Əlaqə
 
-- **Email**: alyvdev@gmail.com
-- **GitHub**: [@alyvdev](https://github.com/alyvdev)
-- **LinkedIn**: [Ali Aliyev](https://linkedin.com/in/alyvofficial)
+- Email: alyvdev@gmail.com
+- GitHub: [@alyvdev](https://github.com/alyvdev)
+- LinkedIn: [Ali Aliyev](https://linkedin.com/in/alyvofficial)
 
-## 🐛 Problemlər
+## Problemlər
 
 Problem tapdınızsa və ya təklif vermək istəyirsinizsə, [Issues](https://github.com/alyvdev/ai-flowchart-generator/issues) bölməsində bildirin.
 
-## 🚀 Production Deployment
+## Production Deployment
 
-### Netlify ilə Deploy
+**Netlify ilə Deploy**
 
-1. **GitHub-a push edin**
-2. **Netlify-də yeni site yaradın**
-3. **Environment variables əlavə edin**
-4. **Build settings konfiqurasiya edin**
+1. GitHub-a push edin
+2. Netlify-də yeni site yaradın
+3. Environment variables əlavə edin
+4. Build settings konfiqurasiya edin
 
-### Vercel ilə Deploy
+**Vercel ilə Deploy**
 
-1. **Vercel CLI quraşdırın**
+1. Vercel CLI quraşdırın: `npm i -g vercel`
+2. Deploy edin: `vercel --prod`
 
-```bash
-npm i -g vercel
-```
+**GitHub Pages ilə Deploy**
 
-2. **Deploy edin**
+1. GitHub Actions workflow yaradın
+2. gh-pages branch yaradın
+3. Settings > Pages-də konfiqurasiya edin
 
-```bash
-vercel --prod
-```
+## Performance
 
-### GitHub Pages ilə Deploy
+**Optimizasiya tövsiyələri**
 
-1. **GitHub Actions workflow yaradın**
-2. **gh-pages branch yaradın**
-3. **Settings > Pages-də konfiqurasiya edin**
+- CDN istifadə edin (statik fayllar üçün)
+- Lazy loading (böyük komponentlər üçün)
+- Caching (API cavabları üçün)
+- Minification (CSS və JS faylları üçün)
+- Image optimization (şəkillər üçün)
 
-## 📊 Performance
+**Monitoring**
 
-### Optimizasiya Tövsiyələri
-
-- **CDN istifadə edin** - Statik fayllar üçün
-- **Lazy loading** - Böyük komponentlər üçün
-- **Caching** - API cavabları üçün
-- **Minification** - CSS və JS faylları üçün
-- **Image optimization** - Şəkillər üçün
-
-### Monitoring
-
-- **Google Analytics** - İstifadəçi davranışı
-- **Sentry** - Error tracking
-- **Lighthouse** - Performance audit
-
----
-
-⭐ **Bu layihəni bəyəndinizsə, ulduz verməyi unutmayın!**
-
-📢 **Sosial mediada paylaşın və dostlarınıza tövsiyə edin!**
+- Google Analytics (istifadəçi davranışı)
+- Sentry (error tracking)
+- Lighthouse (performance audit)
