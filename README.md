@@ -65,48 +65,43 @@ Alqoritminizi sadə dillə yazırsınız, proqramlaşdırma dilini seçirsiniz v
 - İnternet bağlantısı
 - Google Gemini API açarı
 
-**Lokal quraşdırma**
+**İstifadə**
 
-1. Layihəni klonlayın
+Bu tətbiqin quraşdırılması tələb olunmur. Sadəcə `index.html` faylını veb brauzerinizdə açın.
 
-```bash
-git clone https://github.com/alyvdev/ai-flowchart-generator.git
-cd ai-flowchart-generator
-```
+Alternativ olaraq, layihəni lokal serverdə işə sala bilərsiniz:
 
-2. API açarını konfiqurasiya edin
+1.  Layihəni klonlayın:
 
-```javascript
-// index.html faylında API açarını dəyişdirin
-const apiKey = "YOUR_GEMINI_API_KEY_HERE";
-```
+    ```bash
+    git clone https://github.com/alyvdev/ai-flowchart-generator.git
+    cd ai-flowchart-generator
+    ```
 
-3. Lokal server başladın
+2.  Lokal server başladın (istənilən üsulla):
 
-```bash
-# Python ilə
-python -m http.server 8000
+    ```bash
+    # Python ilə
+    python -m http.server
 
-# Node.js ilə
-npx serve .
+    # Node.js ilə (serve paketi tələb olunur)
+    npx serve .
+    ```
 
-# PHP ilə
-php -S localhost:8000
-```
-
-4. Brauzerdə açın: `http://localhost:8000`
+3.  Brauzerdə açın: `http://localhost:8000` (və ya serverin istifadə etdiyi port).
 
 ## Konfigurasiya
 
-**Google Gemini API açarı əldə etmək**
+**Google Gemini API açarı əldə etmək və tənzimləmək**
 
-1. [Google AI Studio](https://makersuite.google.com/app/apikey) saytına daxil olun
-2. Yeni API açarı yaradın
-3. API açarını `index.html` faylında dəyişdirin
+1.  [Google AI Studio](https://makersuite.google.com/app/apikey) saytına daxil olub yeni bir API açarı yaradın.
+2.  Tətbiqi brauzerdə açdıqdan sonra sol alt köşədəki **API Tənzimləmələri** düyməsini basın.
+3.  Açılan pəncərədə əldə etdiyiniz API açarını müvafiq sahəyə daxil edib **Saxla** düyməsini basın.
+4.  Açarınız brauzerinizin yaddaşında (Local Storage) saxlanılacaq və başqa heç bir yerə göndərilməyəcək.
 
 **Dəstəklənən proqramlaşdırma dilləri**
 
-JavaScript, TypeScript, Python, Java, Kotlin, C++, C#, PHP, Ruby, Go, Rust, Swift, SQL, HTML/CSS və daha çoxu.
+C#, C++, Java, JavaScript, PHP, Python, SQL, Swift, TypeScript.
 
 ## İstifadə təlimatı
 

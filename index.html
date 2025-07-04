@@ -12,100 +12,263 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./CSS/style.css" />
+    <style>
+      :root {
+        --background: #000000;
+        --surface-1: #111111;
+        --surface-2: #1f1f1f;
+        --surface-3: #2c2c2c;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --border-color: #3a3a3a;
+        --accent-color: #ffffff;
+        --accent-text: #000000;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background);
+        color: var(--text-primary);
+      }
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--surface-1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--surface-3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #333;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      #output.panning {
+        cursor: grabbing !important;
+      }
+      #output svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      #output {
+        cursor: grab;
+      }
+      #output .node {
+        cursor: pointer;
+      }
+      #output .node:hover rect,
+      #output .node:hover polygon,
+      #output .node:hover ellipse {
+        stroke-width: 2px !important;
+        stroke: var(--accent-color) !important;
+      }
+      .chat-message {
+        max-width: 90%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+      }
+      .user-message {
+        background-color: var(--accent-color);
+        color: var(--accent-text);
+        align-self: flex-end;
+        border-bottom-right-radius: 0.25rem;
+      }
+      .assistant-message {
+        background-color: var(--surface-2);
+        align-self: flex-start;
+        border-bottom-left-radius: 0.25rem;
+      }
+      .assistant-message p,
+      .assistant-message ul,
+      .assistant-message ol {
+        margin-bottom: 0.5rem;
+      }
+      .assistant-message ul,
+      .assistant-message ol {
+        padding-left: 1.5rem;
+      }
+      .assistant-message li {
+        margin-bottom: 0.25rem;
+      }
+      .assistant-message strong {
+        color: #fff;
+      }
+      code {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 0.1em 0.3em;
+        border-radius: 4px;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.9em;
+      }
+      pre code,
+      .modal-content code {
+        background-color: #111 !important;
+        display: block;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      svg#graphDiv {
+        max-width: none !important;
+      }
+    </style>
   </head>
   <body class="bg-[--background] text-[--text-primary]">
-    <!-- Mobile Header -->
-    <div
-      class="md:hidden bg-[--surface-1] border-b border-[--border-color] p-4 flex items-center justify-between"
-    >
-      <h1 class="text-lg font-bold">Blox Sxem Alqoritma</h1>
-      <div class="flex items-center gap-2">
-        <button
-          id="mobile-chat-toggle"
-          class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-            ></path>
-          </svg>
-        </button>
-        <button
-          id="mobile-menu-toggle"
-          class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="flex flex-col md:flex-row h-full md:h-screen overflow-hidden">
+    <div class="flex sm:flex-col md:flex-row h-screen overflow-hidden">
+      <!-- Left Panel -->
       <aside
-        id="history-panel"
-        class="hidden md:flex w-64 flex-shrink-0 bg-[--surface-1] p-4 flex-col border-r border-[--border-color]"
+        class="w-full md:w-[450px] lg:w-[500px] flex-shrink-0 bg-[--surface-1] border-r border-[--border-color] flex flex-col"
       >
         <div
-          class="w-12 h-12 bg-white rounded-xl mb-4 flex items-center justify-center shadow-lg p-2"
+          class="p-4 border-b border-[--border-color] flex items-center gap-3"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            fill="#4F46E5"
-            width="32"
-            height="32"
-            version="1.1"
-            viewBox="0 0 295.239 295.239"
-            xml:space="preserve"
+          <div
+            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-lg p-1.5"
           >
-            <g>
-              <g>
-                <g>
-                  <path
-                    d="M228.572,123.81v14.286h-51.257l-24.933-12.467v-16.105h7.143c6.562,0,11.905-5.338,11.905-11.905     c0-3.876-1.89-7.29-4.762-9.462v-5.062c6.081-5.438,9.524-13.029,9.524-21.186c0-15.757-12.814-28.571-28.571-28.571     c-15.757,0-28.571,12.814-28.571,28.571c0,8.157,3.443,15.752,9.524,21.186v5.062c-2.871,2.176-4.762,5.59-4.762,9.462     c0,6.567,5.343,11.905,11.905,11.905h7.143v16.105l-34.459,17.228l34.457,17.229v16.105H38.096v-14.286h28.571V123.81H0.001     v38.095h28.571v14.286v4.762V200H0.001v38.095h66.667V200H38.096v-14.286h104.762V200h-28.571v38.095h28.571v19.048h-9.524     c-10.505,0-19.048,8.543-19.048,19.048s8.543,19.048,19.048,19.048h28.571c10.505,0,19.048-8.543,19.048-19.048     s-8.543-19.048-19.048-19.048h-9.524v-19.048h28.571V200h-28.571v-14.286v-9.524v-16.105l24.933-12.467h51.257v14.286h28.571     v38.771c-8.19,2.129-14.286,9.519-14.286,18.371c0,10.505,8.543,19.048,19.048,19.048c10.505,0,19.048-8.543,19.048-19.048     c0-8.852-6.095-16.243-14.286-18.371v-38.771h28.573V123.81H228.572z M57.144,209.523v19.048H9.524v-19.048H57.144z      M9.524,152.381v-19.048h47.619v19.048H9.524z M147.62,42.857c10.505,0,19.048,8.543,19.048,19.048     c0,5.957-2.781,11.476-7.633,15.143l-1.89,1.424v7.243h-4.762v-10.4c5.529-1.971,9.524-7.21,9.524-13.41     c0-7.876-6.41-14.286-14.286-14.286c-7.876,0-14.286,6.41-14.286,14.286c0,6.2,3.995,11.438,9.524,13.41v10.4h-4.762v-7.243     l-1.89-1.429c-4.852-3.662-7.633-9.181-7.633-15.138C128.571,51.4,137.115,42.857,147.62,42.857z M152.381,61.905     c0,2.629-2.138,4.762-4.762,4.762c-2.624,0-4.762-2.134-4.762-4.762c0-2.629,2.138-4.762,4.762-4.762     C150.243,57.143,152.381,59.276,152.381,61.905z M135.714,100c-1.314,0-2.381-1.071-2.381-2.381s1.067-2.381,2.381-2.381h23.81     c1.314,0,2.381,1.071,2.381,2.381S160.839,100,159.524,100H135.714z M161.906,266.666c5.252,0.001,9.524,4.272,9.524,9.524     s-4.271,9.524-9.524,9.524h-28.571c-5.252,0-9.524-4.271-9.524-9.524c0-5.252,4.271-9.524,9.524-9.524H161.906z M171.43,209.523     v19.048h-47.619v-19.048H171.43z M147.62,151.819l-17.924-8.962l17.924-8.962l17.924,8.962L147.62,151.819z M271.43,219.048     c0,5.252-4.271,9.524-9.524,9.524s-9.524-4.271-9.524-9.524c0-5.253,4.271-9.524,9.524-9.524S271.43,213.795,271.43,219.048z      M285.714,152.381h-47.619v-19.048h0h47.619V152.381z"
-                  />
-                  <path
-                    d="M85.714,28.571c6.2,0,11.438-3.995,13.41-9.524H117.6c-12.271,8.624-20.69,22.353-22.119,38.096h-9.767v28.571h28.571     V57.143h-9.243c2.381-21.395,20.557-38.095,42.576-38.095c22.019,0,40.2,16.7,42.576,38.095h-9.243v28.571h28.571V57.143h-9.767     c-1.429-15.743-9.843-29.471-22.119-38.095h18.476c1.971,5.529,7.21,9.524,13.41,9.524c7.876,0,14.286-6.41,14.286-14.286     C223.809,6.41,217.401,0,209.524,0c-6.2,0-11.438,3.995-13.41,9.524h-96.99C97.152,3.995,91.915,0,85.714,0     c-7.876,0-14.286,6.41-14.286,14.286C71.428,22.162,77.839,28.571,85.714,28.571z M104.763,76.19h-9.524v-9.524h9.524V76.19z      M190.477,66.666h9.524v9.524h-9.524V66.666z M209.524,9.524c2.624,0,4.762,2.133,4.762,4.762c0,2.629-2.138,4.762-4.762,4.762     c-2.624,0-4.762-2.133-4.762-4.762C204.763,11.657,206.901,9.524,209.524,9.524z M85.714,9.524c2.624,0,4.762,2.133,4.762,4.762     c0,2.629-2.138,4.762-4.762,4.762c-2.624,0-4.762-2.133-4.762-4.762C80.953,11.657,83.091,9.524,85.714,9.524z"
-                  />
-                </g>
-              </g>
-            </g>
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#4F46E5"
+              viewBox="0 0 295.239 295.239"
+            >
+              <path
+                d="M228.572 123.81v14.286h-51.257l-24.933-12.467v-16.105h7.143c6.562 0 11.905-5.338 11.905-11.905 0-3.876-1.89-7.29-4.762-9.462v-5.062c6.081-5.438 9.524-13.029 9.524-21.186 0-15.757-12.814-28.571-28.571-28.571-15.757 0-28.571 12.814-28.571 28.571 0 8.157 3.443 15.752 9.524 21.186v5.062c-2.871 2.176-4.762 5.59-4.762 9.462 0 6.567 5.343 11.905 11.905 11.905h7.143v16.105l-34.459 17.228 34.457 17.229v16.105H38.096v-14.286h28.571V123.81H0v38.095h28.571v14.286v4.762V200H0v38.095h66.667V200H38.096v-14.286h104.762V200h-28.571v38.095h28.571v19.048h-9.524c-10.505 0-19.048 8.543-19.048 19.048s8.543 19.048 19.048 19.048h28.571c10.505 0 19.048-8.543 19.048-19.048s-8.543-19.048-19.048-19.048h-9.524v-19.048h28.571V200h-28.571v-14.286v-9.524v-16.105l24.933-12.467h51.257v14.286h28.571v38.771c-8.19 2.129-14.286 9.519-14.286 18.371 0 10.505 8.543 19.048 19.048 19.048s19.048-8.543 19.048-19.048c0-8.852-6.095-16.243-14.286-18.371v-38.771h28.573V123.81H228.572zM57.144 209.523v19.048H9.524v-19.048H57.144zM9.524 152.381v-19.048h47.619v19.048H9.524zM147.62 42.857c10.505 0 19.048 8.543 19.048 19.048 0 5.957-2.781 11.476-7.633 15.143l-1.89 1.424v7.243h-4.762v-10.4c5.529-1.971 9.524-7.21 9.524-13.41 0-7.876-6.41-14.286-14.286-14.286-7.876 0-14.286 6.41-14.286 14.286 0 6.2 3.995 11.438 9.524 13.41v10.4h-4.762v-7.243l-1.89-1.429c-4.852-3.662-7.633-9.181-7.633-15.138C128.571 51.4 137.115 42.857 147.62 42.857zM152.381 61.905c0 2.629-2.138 4.762-4.762 4.762s-4.762-2.134-4.762-4.762c0-2.629 2.138-4.762 4.762-4.762C150.243 57.143 152.381 59.276 152.381 61.905zM135.714 100c-1.314 0-2.381-1.071-2.381-2.381s1.067-2.381 2.381-2.381h23.81c1.314 0 2.381 1.071 2.381 2.381S160.839 100 159.524 100H135.714zM161.906 266.666c5.252 0 9.524 4.272 9.524 9.524s-4.271 9.524-9.524 9.524h-28.571c-5.252 0-9.524-4.271-9.524-9.524s4.271-9.524 9.524-9.524H161.906zM171.43 209.523v19.048h-47.619v-19.048H171.43zM147.62 151.819l-17.924-8.962 17.924-8.962 17.924 8.962L147.62 151.819zM271.43 219.048c0 5.252-4.271 9.524-9.524 9.524s-9.524-4.271-9.524-9.524c0-5.253 4.271-9.524 9.524-9.524S271.43 213.795 271.43 219.048zM285.714 152.381h-47.619v-19.048h47.619V152.381z"
+              />
+              <path
+                d="M85.714 28.571c6.2 0 11.438-3.995 13.41-9.524H117.6c-12.271 8.624-20.69 22.353-22.119 38.096h-9.767v28.571h28.571V57.143h-9.243c2.381-21.395 20.557-38.095 42.576-38.095 22.019 0 40.2 16.7 42.576 38.095h-9.243v28.571h28.571V57.143h-9.767c-1.429-15.743-9.843-29.471-22.119-38.095h18.476c1.971 5.529 7.21 9.524 13.41 9.524 7.876 0 14.286-6.41 14.286-14.286C223.809 6.41 217.401 0 209.524 0c-6.2 0-11.438 3.995-13.41 9.524h-96.99C97.152 3.995 91.915 0 85.714 0c-7.876 0-14.286 6.41-14.286 14.286C71.428 22.162 77.839 28.571 85.714 28.571zM104.763 76.19h-9.524v-9.524h9.524V76.19zM190.477 66.666h9.524v9.524h-9.524V66.666zM209.524 9.524c2.624 0 4.762 2.133 4.762 4.762s-2.138 4.762-4.762 4.762c-2.624 0-4.762-2.133-4.762-4.762C204.763 11.657 206.901 9.524 209.524 9.524zM85.714 9.524c2.624 0 4.762 2.133 4.762 4.762s-2.138 4.762-4.762 4.762c-2.624 0-4.762-2.133-4.762-4.762C80.953 11.657 83.091 9.524 85.714 9.524z"
+              />
+            </svg>
+          </div>
         </div>
-        <button
-          id="new-chat-btn"
-          class="w-full mb-4 bg-[--accent-color] text-[--accent-text] font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-opacity"
+
+        <div class="flex-grow overflow-y-auto p-4 space-y-6">
+          <!-- Prompt Section -->
+          <div
+            class="bg-[--surface-2] border border-[--border-color] rounded-xl p-4"
+          >
+            <label
+              for="userInput"
+              class="block text-md font-semibold text-[--text-primary] mb-3"
+              >1. Alqoritmin təsviri</label
+            >
+            <textarea
+              id="userInput"
+              class="w-full p-3 bg-[--surface-3] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary] resize-y text-sm h-36 leading-relaxed"
+              placeholder="Məsələn: İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi..."
+            ></textarea>
+
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  for="lang-select"
+                  class="block text-sm font-semibold text-[--text-primary] mb-2"
+                  >Proqramlaşdırma dili</label
+                >
+                <select
+                  id="lang-select"
+                  class="w-full p-3 bg-[--surface-3] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none text-sm"
+                >
+                  <option value="C#">C#</option>
+                  <option value="C++">C++</option>
+                  <option value="Java">Java</option>
+                  <option selected value="JavaScript">JavaScript</option>
+                  <option value="PHP">PHP</option>
+                  <option value="Python">Python</option>
+                  <option value="SQL">SQL</option>
+                  <option value="Swift">Swift</option>
+                  <option value="TypeScript">TypeScript</option>
+                </select>
+              </div>
+              <div class="flex items-end">
+                <button
+                  id="generateBtn"
+                  class="w-full bg-[--accent-color] text-[--accent-text] font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center whitespace-nowrap text-sm"
+                >
+                  <span id="btn-text">Generasiya et</span>
+                  <div
+                    id="loader"
+                    class="loader hidden ml-3"
+                    style="width: 20px; height: 20px; border-top-color: black"
+                  ></div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Section -->
+          <div
+            class="bg-[--surface-2] border border-[--border-color] rounded-xl p-4 flex flex-col h-96"
+          >
+            <h2 class="text-md font-semibold text-[--text-primary] mb-3">
+              2. Alqoritmi müzakirə edin
+            </h2>
+            <div
+              id="chat-messages"
+              class="flex-grow overflow-y-auto space-y-4 pr-2 mb-4 flex flex-col"
+            >
+              <!-- Chat messages will be populated here -->
+            </div>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="chat-input"
+                class="flex-grow p-3 bg-[--surface-3] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary] text-sm"
+                placeholder="Sualınızı yazın..."
+              />
+              <button
+                id="send-btn"
+                class="px-4 py-2 bg-[--accent-color] text-[--accent-text] rounded-lg hover:opacity-90 transition-opacity font-bold text-sm"
+              >
+                Göndər
+              </button>
+            </div>
+          </div>
+
+          <!-- History Section -->
+          <div
+            class="bg-[--surface-2] border border-[--border-color] rounded-xl p-4"
+          >
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="text-md font-semibold text-[--text-primary]">
+                3. Tarixçə
+              </h2>
+              <button
+                id="new-chat-btn"
+                class="bg-[--accent-color] text-[--accent-text] font-bold py-1 px-3 rounded-lg hover:opacity-90 transition-opacity text-xs"
+              >
+                + Yeni Söhbət
+              </button>
+            </div>
+            <ul
+              id="history-list"
+              class="space-y-2 max-h-48 overflow-y-auto pr-2"
+            ></ul>
+          </div>
+        </div>
+
+        <div
+          class="p-4 border-t border-[--border-color] flex items-center justify-between"
         >
-          + Yeni Söhbət
-        </button>
-        <div class="flex-grow overflow-y-auto pr-2">
-          <h2 class="text-sm font-semibold text-[--text-secondary] mb-2">
-            Tarixçə
-          </h2>
-          <ul id="history-list" class="space-y-2"></ul>
-        </div>
-        <div class="mt-4 pt-4 border-t border-[--border-color]">
           <button
             id="api-settings-btn"
-            class="w-full text-left p-2 rounded-md hover:bg-gray-700 transition-colors duration-200 text-sm flex items-center gap-2"
+            class="text-left p-2 rounded-md hover:bg-[--surface-2] transition-colors duration-200 text-sm flex items-center gap-2 text-[--text-secondary]"
           >
             <svg
               width="16"
@@ -122,167 +285,101 @@
             </svg>
             API Tənzimləmələri
           </button>
+          <footer class="text-center text-[--text-secondary] text-xs">
+            <a
+              class="github-button"
+              href="https://github.com/alyvdev/ai-flowchart-generator"
+              data-color-scheme="no-preference: light; light: light; dark: dark;"
+              data-icon="octicon-star"
+              data-size="large"
+              data-show-count="true"
+              aria-label="Star alyvdev/ai-flowchart-generator on GitHub"
+              >Star</a
+            >
+          </footer>
         </div>
-        <footer class="text-center mt-4 text-[--text-secondary] text-xs">
-          <p>Blok-sxemlər Mermaid.js ilə hazırlanır.</p>
-          <p>ALYV Dev</p>
-        </footer>
       </aside>
 
-      <main class="flex-grow flex flex-col min-h-0 overflow-y-auto">
-        <div class="p-4 md:p-6">
-          <div>
-            <div
-              class="bg-[--surface-1] border border-[--border-color] rounded-xl p-6 shadow-lg flex flex-col"
+      <!-- Right Panel (Canvas) -->
+      <main class="flex-grow flex flex-col bg-[--background] relative">
+        <div
+          class="absolute top-4 left-4 right-4 flex justify-between items-center z-10 pointer-events-none"
+        >
+          <div
+            id="canvas-controls"
+            class="flex items-center gap-1 bg-black/30 backdrop-blur-sm p-1.5 rounded-xl pointer-events-auto"
+          >
+            <button
+              id="zoom-in"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
             >
-              <label
-                for="userInput"
-                class="block text-lg font-semibold text-[--text-primary] mb-3"
-                >1. Alqoritmin təsviri</label
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-              <textarea
-                id="userInput"
-                class="w-full p-4 md:p-5 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary] resize-y text-base h-[220px] md:h-[240px] leading-relaxed"
-                placeholder="Məsələn: İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi..."
-              ></textarea>
-
-              <div class="mt-6 flex flex-col md:flex-row gap-4">
-                <div class="flex-grow">
-                  <label
-                    for="lang-select"
-                    class="block text-base font-semibold text-[--text-primary] mb-3"
-                    >Proqramlaşdırma dilini seçin</label
-                  >
-                  <select
-                    id="lang-select"
-                    class="w-full p-3 md:p-4 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none text-base min-h-[48px] md:min-h-[52px]"
-                  >
-                    <option value="C#">C#</option>
-                    <option value="C++">C++</option>
-                    <option value="CSS">CSS</option>
-                    <option value="Go">Go</option>
-                    <option value="HTML">HTML</option>
-                    <option value="Java">Java</option>
-                    <option selected value="JavaScript">JavaScript</option>
-                    <option value="JSON">JSON</option>
-                    <option value="Kotlin">Kotlin</option>
-                    <option value="PHP">PHP</option>
-                    <option value="Python">Python</option>
-                    <option value="Ruby">Ruby</option>
-                    <option value="Rust">Rust</option>
-                    <option value="SQL">SQL</option>
-                    <option value="Swift">Swift</option>
-                    <option value="TypeScript">TypeScript</option>
-                    <option value="XML">XML</option>
-                    <option value="YAML">YAML</option>
-                  </select>
-                </div>
-                <div class="flex items-end md:items-end">
-                  <button
-                    id="generateBtn"
-                    class="w-full md:w-auto bg-[--accent-color] text-[--accent-text] font-bold py-3 md:py-4 px-6 md:px-8 rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center whitespace-nowrap text-base min-h-[48px] md:min-h-[52px]"
-                  >
-                    <span id="btn-text">Generasiya et</span>
-                    <div
-                      id="loader"
-                      class="loader hidden ml-3"
-                      style="width: 20px; height: 20px; border-top-color: black"
-                    ></div>
-                  </button>
-                </div>
-              </div>
-            </div>
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button
+              id="zoom-out"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <button
+              id="reset-pan"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 2v6h6" />
+                <path d="M21 12A9 9 0 0 0 6 5.3L3 8" />
+                <path d="M21 22v-6h-6" />
+                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7" />
+              </svg>
+            </button>
           </div>
         </div>
-
-        <div class="p-4 md:p-6 pt-0 flex-grow min-h-0">
-          <div
-            class="bg-[--surface-1] border border-[--border-color] rounded-xl shadow-lg flex flex-col h-full min-h-[400px] md:min-h-96"
-          >
-            <div
-              class="p-4 flex justify-between items-center border-b border-[--border-color]"
-            >
-              <h2 class="text-lg font-semibold">Blok-sxem</h2>
-              <div id="canvas-controls" class="flex items-center gap-2 hidden">
-                <button
-                  id="zoom-in"
-                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                  </svg>
-                </button>
-                <button
-                  id="zoom-out"
-                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                  </svg>
-                </button>
-                <button
-                  id="reset-pan"
-                  class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path d="M3 2v6h6"></path>
-                    <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
-                    <path d="M21 22v-6h-6"></path>
-                    <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div
-              class="flex-grow overflow-hidden relative p-0 min-h-0 h-[400px] md:h-auto"
-            >
-              <div
-                id="output"
-                class="absolute inset-0 w-full h-full text-center text-[--text-secondary] flex items-center justify-center overflow-auto"
-                style="cursor: grab"
-              >
-                <p id="placeholder-text">Blok-sxeminiz burada göstəriləcək.</p>
-                <div id="error-message" class="text-red-400 hidden"></div>
-              </div>
-            </div>
-          </div>
+        <div
+          id="output"
+          class="w-full h-full text-center text-[--text-secondary] flex items-center justify-center overflow-auto bg-[--surface-1]"
+        >
+          <p id="placeholder-text">Blok-sxeminiz burada göstəriləcək.</p>
+          <div id="error-message" class="text-red-400 hidden"></div>
         </div>
       </main>
-
-      <!-- Chat section removed - accessible via mobile header -->
     </div>
 
+    <!-- Details Modal -->
     <div
       id="details-modal"
       class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50"
@@ -294,7 +391,10 @@
           class="p-4 border-b border-gray-600 flex justify-between items-center"
         >
           <h3 id="modal-title" class="text-xl font-bold">Addımın İzahı</h3>
-          <button id="modal-close" class="text-gray-400 hover:text-white">
+          <button
+            id="modal-close"
+            class="text-gray-400 hover:text-white text-3xl leading-none"
+          >
             &times;
           </button>
         </div>
@@ -302,179 +402,13 @@
       </div>
     </div>
 
-    <!-- Mobile Menu Overlay -->
-    <div
-      id="mobile-menu-overlay"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
-    >
-      <div
-        class="fixed left-0 top-0 h-full w-80 bg-[--surface-1] transform -translate-x-full transition-transform duration-300 ease-in-out"
-        id="mobile-menu"
-      >
-        <div class="p-4 border-b border-[--border-color]">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Menyu</h2>
-            <button
-              id="close-mobile-menu"
-              class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="p-4 space-y-4">
-          <button
-            id="mobile-new-chat"
-            class="w-full text-left p-3 bg-[--accent-color] text-[--accent-text] rounded-lg font-bold hover:opacity-90 transition-opacity flex items-center gap-2"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            Yeni Söhbət
-          </button>
-
-          <button
-            id="mobile-api-settings"
-            class="w-full text-left p-3 rounded-lg hover:bg-[--surface-2] transition-colors flex items-center gap-2"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
-              />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            API Tənzimləmələri
-          </button>
-        </div>
-
-        <div class="p-4 border-t border-[--border-color]">
-          <h3 class="text-sm font-semibold text-[--text-secondary] mb-3">
-            Tarixçə
-          </h3>
-          <div
-            id="mobile-history-list"
-            class="space-y-2 max-h-96 overflow-y-auto"
-          >
-            <!-- History items will be populated here -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile Chat Overlay -->
-    <div
-      id="mobile-chat-overlay"
-      class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
-    >
-      <div
-        class="fixed bottom-0 left-0 right-0 h-3/4 bg-[--surface-1] transform translate-y-full transition-transform duration-300 ease-in-out rounded-t-xl"
-        id="mobile-chat"
-      >
-        <div class="p-4 border-b border-[--border-color]">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Alqoritmi müzakirə edin</h2>
-            <button
-              id="close-mobile-chat"
-              class="p-2 rounded-lg hover:bg-[--surface-2] transition-colors"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="h-full flex flex-col pb-16">
-          <div
-            id="mobile-chat-messages"
-            class="flex-grow overflow-y-auto p-4 space-y-4"
-          >
-            <!-- Chat messages will be populated here -->
-          </div>
-
-          <div class="p-4 border-t border-[--border-color]">
-            <div class="flex gap-2">
-              <input
-                type="text"
-                id="mobile-chat-input"
-                class="flex-grow p-3 bg-[--surface-2] border border-[--border-color] rounded-lg focus:ring-2 focus:ring-[--accent-color] focus:outline-none placeholder:text-[--text-secondary]"
-                placeholder="Sualınızı yazın..."
-              />
-              <button
-                id="mobile-send-btn"
-                class="px-4 py-3 bg-[--accent-color] text-[--accent-text] rounded-lg hover:opacity-90 transition-opacity font-bold"
-              >
-                Göndər
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div
-      id="details-modal"
-      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-2 md:p-4 hidden z-50"
-    >
-      <div
-        class="bg-[#222] rounded-lg shadow-xl w-full max-w-full md:max-w-2xl max-h-[95vh] md:max-h-[80vh] flex flex-col"
-      >
-        <div
-          class="p-4 border-b border-gray-600 flex justify-between items-center"
-        >
-          <h3 id="modal-title" class="text-xl font-bold">Addımın İzahı</h3>
-          <button id="modal-close" class="text-gray-400 hover:text-white">
-            &times;
-          </button>
-        </div>
-        <div id="modal-content" class="p-6 overflow-y-auto text-gray-300">
-          <!-- Detailed content will be injected here -->
-        </div>
-      </div>
-    </div>
-
     <!-- API Settings Modal -->
     <div
       id="api-modal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4"
     >
       <div
-        class="bg-[--surface-1] border border-[--border-color] rounded-xl p-4 md:p-6 w-full max-w-full md:max-w-md mx-2 md:mx-4"
+        class="bg-[--surface-1] border border-[--border-color] rounded-xl p-6 w-full max-w-md"
       >
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-xl font-semibold flex items-center gap-2">
@@ -510,15 +444,13 @@
             </svg>
           </button>
         </div>
-
         <div class="space-y-4">
           <div>
             <label
               for="api-key-input"
               class="block text-sm font-medium text-[--text-primary] mb-2"
+              >Google Gemini API Açarı</label
             >
-              Google Gemini API Açarı
-            </label>
             <input
               type="password"
               id="api-key-input"
@@ -535,7 +467,6 @@
               <div id="api-status" class="text-xs"></div>
             </div>
           </div>
-
           <div
             class="bg-[--surface-2] border border-[--border-color] rounded-lg p-4"
           >
@@ -567,8 +498,7 @@
                 <span
                   class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                   >1</span
-                >
-                <span
+                ><span
                   ><a
                     href="https://makersuite.google.com/app/apikey"
                     target="_blank"
@@ -582,29 +512,25 @@
                 <span
                   class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                   >2</span
-                >
-                <span>Google hesabınızla giriş edin</span>
+                ><span>Google hesabınızla giriş edin</span>
               </li>
               <li class="flex items-start gap-2">
                 <span
                   class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                   >3</span
-                >
-                <span>"Create API Key" düyməsini basın</span>
+                ><span>"Create API Key" düyməsini basın</span>
               </li>
               <li class="flex items-start gap-2">
                 <span
                   class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                   >4</span
-                >
-                <span>Yaradılan API açarını kopyalayın</span>
+                ><span>Yaradılan API açarını kopyalayın</span>
               </li>
               <li class="flex items-start gap-2">
                 <span
                   class="bg-[--accent-color] text-[--accent-text] rounded-full w-4 h-4 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5"
                   >5</span
-                >
-                <span>Yuxarıdakı sahəyə yapışdırın</span>
+                ><span>Yuxarıdakı sahəyə yapışdırın</span>
               </li>
             </ol>
             <div
@@ -614,7 +540,6 @@
               saxlanılır və heç yerə göndərilmir.
             </div>
           </div>
-
           <div class="flex gap-3">
             <button
               id="save-api-key"
@@ -633,6 +558,756 @@
       </div>
     </div>
 
-    <script type="module" src="./JS/script.js"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+      // --- DOM Element Selection ---
+      const generateBtn = document.getElementById("generateBtn");
+      const userInput = document.getElementById("userInput");
+      const langSelect = document.getElementById("lang-select");
+      const outputDiv = document.getElementById("output");
+      const loader = document.getElementById("loader");
+      const btnText = document.getElementById("btn-text");
+      const placeholderText = document.getElementById("placeholder-text");
+      const errorMessage = document.getElementById("error-message");
+
+      // Chat Elements
+      const chatMessages = document.getElementById("chat-messages");
+      const chatInput = document.getElementById("chat-input");
+      const sendBtn = document.getElementById("send-btn");
+
+      // Modal Elements
+      const modal = document.getElementById("details-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalContent = document.getElementById("modal-content");
+      const modalClose = document.getElementById("modal-close");
+
+      // History Elements
+      const newChatBtn = document.getElementById("new-chat-btn");
+      const historyList = document.getElementById("history-list");
+
+      // API Settings Elements
+      const apiSettingsBtn = document.getElementById("api-settings-btn");
+      const apiModal = document.getElementById("api-modal");
+      const closeApiModal = document.getElementById("close-api-modal");
+      const apiKeyInput = document.getElementById("api-key-input");
+      const toggleApiVisibility = document.getElementById(
+        "toggle-api-visibility"
+      );
+      const apiStatus = document.getElementById("api-status");
+      const saveApiKey = document.getElementById("save-api-key");
+      const testApiKey = document.getElementById("test-api-key");
+
+      // Canvas Controls
+      const canvasControls = document.getElementById("canvas-controls");
+
+      // --- State Management ---
+      let sessions = [];
+      let activeSessionId = null;
+      let detailsMap = new Map();
+      let panZoomInstance = null;
+
+      // --- API Key Management ---
+      const getApiKey = () => localStorage.getItem("gemini_api_key") || "";
+      const saveApiKeyToStorage = (apiKey) =>
+        localStorage.setItem("gemini_api_key", apiKey);
+
+      const loadApiKeyFromStorage = () => {
+        const savedKey = getApiKey();
+        if (savedKey) {
+          apiKeyInput.value = savedKey;
+          updateApiStatus("Saxlanılmış API açarı yükləndi", "success");
+        } else {
+          updateApiStatus("API açarı tapılmadı", "warning");
+        }
+      };
+
+      const updateApiStatus = (message, type = "info") => {
+        apiStatus.textContent = message;
+        const colorClasses = {
+          success: "text-green-400",
+          error: "text-red-400",
+          warning: "text-yellow-400",
+          info: "text-[--text-secondary]",
+        };
+        apiStatus.className = `text-xs ${
+          colorClasses[type] || colorClasses.info
+        }`;
+      };
+
+      const testApiConnection = async (apiKey) => {
+        if (!apiKey.trim()) {
+          updateApiStatus("API açarı boşdur", "error");
+          return false;
+        }
+        updateApiStatus("Test edilir...", "info");
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: "Salam" }] }],
+              }),
+            }
+          );
+          if (response.ok) {
+            updateApiStatus("✅ API açarı işləyir!", "success");
+            return true;
+          } else {
+            updateApiStatus(`❌ API xətası: ${response.status}`, "error");
+            return false;
+          }
+        } catch (error) {
+          console.error("API test error:", error);
+          updateApiStatus("❌ Bağlantı xətası", "error");
+          return false;
+        }
+      };
+
+      // --- Session Management ---
+      const saveSessions = () => {
+        localStorage.setItem("chatSessions", JSON.stringify(sessions));
+        localStorage.setItem("activeSessionId", activeSessionId);
+      };
+
+      const loadSessions = () => {
+        const savedSessions = localStorage.getItem("chatSessions");
+        const savedActiveId = localStorage.getItem("activeSessionId");
+        if (savedSessions) {
+          sessions = JSON.parse(savedSessions);
+          activeSessionId =
+            savedActiveId || (sessions.length > 0 ? sessions[0].id : null);
+        }
+      };
+
+      const createNewSession = async () => {
+        const newSession = {
+          id: `session_${Date.now()}`,
+          title: "Yeni Söhbət",
+          userInput: "",
+          lang: "JavaScript",
+          mermaidContext: "",
+          detailsMap: [],
+          conversationHistory: [],
+          createdAt: new Date().toISOString(),
+        };
+        sessions.unshift(newSession);
+        await loadSession(newSession.id);
+      };
+
+      const loadSession = async (sessionId) => {
+        const session = sessions.find((s) => s.id === sessionId);
+        if (!session) {
+          console.error(`Session with ID ${sessionId} not found.`);
+          await createNewSession();
+          return;
+        }
+
+        activeSessionId = sessionId;
+        clearUI();
+
+        userInput.value = session.userInput || "";
+        langSelect.value = session.lang || "JavaScript";
+        detailsMap = new Map(session.detailsMap || []);
+
+        if (session.mermaidContext) {
+          await renderMermaid(session.mermaidContext, detailsMap);
+        }
+
+        updateChatUI();
+        renderHistory();
+        saveSessions();
+      };
+
+      const updateCurrentSession = (data) => {
+        const sessionIndex = sessions.findIndex(
+          (s) => s.id === activeSessionId
+        );
+        if (sessionIndex !== -1) {
+          const session = sessions[sessionIndex];
+          sessions[sessionIndex] = { ...session, ...data };
+          if (data.userInput && session.title === "Yeni Söhbət") {
+            sessions[sessionIndex].title = generateTitleFromInput(
+              data.userInput
+            );
+          }
+          saveSessions();
+          renderHistory();
+        }
+      };
+
+      const generateTitleFromInput = (input) => {
+        if (!input || !input.trim()) return "Yeni Söhbət";
+        const words = input.trim().split(/\s+/).slice(0, 5).join(" ");
+        return words.length > 40 ? words.substring(0, 37) + "..." : words;
+      };
+
+      // --- UI Rendering ---
+      const clearUI = () => {
+        userInput.value = "";
+        langSelect.value = "JavaScript";
+        if (panZoomInstance) {
+          try {
+            panZoomInstance.destroy();
+          } catch (e) {
+            console.warn("Pan-zoom destroy error:", e);
+          }
+          panZoomInstance = null;
+        }
+        outputDiv.innerHTML = `<p id="placeholder-text">Blok-sxeminiz burada göstəriləcək.</p>`;
+        errorMessage.classList.add("hidden");
+        canvasControls.classList.add("hidden");
+        detailsMap.clear();
+        chatMessages.innerHTML = "";
+      };
+
+      const renderHistory = () => {
+        historyList.innerHTML = "";
+        sessions.forEach((session) => {
+          const li = document.createElement("li");
+          li.className = `group relative p-2 rounded-md hover:bg-[--surface-3] transition-colors duration-200 text-sm ${
+            session.id === activeSessionId
+              ? "bg-[--surface-3] font-semibold"
+              : ""
+          }`;
+          li.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="truncate cursor-pointer flex-grow">${session.title}</span>
+                        <div class="hidden group-hover:flex items-center gap-1 ml-2">
+                             <button class="edit-btn p-1 rounded hover:bg-gray-600" title="Başlığı düzəlt"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                             <button class="delete-btn p-1 rounded hover:bg-red-600" title="Söhbəti sil"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+                        </div>
+                    </div>`;
+          li.querySelector(".truncate").addEventListener("click", () =>
+            loadSession(session.id)
+          );
+          li.querySelector(".edit-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            const newTitle = prompt("Yeni başlıq daxil edin:", session.title);
+            if (newTitle && newTitle.trim()) {
+              updateCurrentSession({ title: newTitle.trim() });
+            }
+          });
+          li.querySelector(".delete-btn").addEventListener(
+            "click",
+            async (e) => {
+              e.stopPropagation();
+              const sessionIndex = sessions.findIndex(
+                (s) => s.id === session.id
+              );
+              sessions.splice(sessionIndex, 1);
+              if (activeSessionId === session.id) {
+                await loadSession(sessions[0].id);
+              } else {
+                renderHistory();
+                saveSessions();
+              }
+            }
+          );
+          historyList.appendChild(li);
+        });
+      };
+
+      const updateChatUI = () => {
+        const session = sessions.find((s) => s.id === activeSessionId);
+        chatMessages.innerHTML = "";
+        if (
+          session &&
+          session.conversationHistory &&
+          session.conversationHistory.length > 0
+        ) {
+          session.conversationHistory.forEach((msg) => {
+            const messageDiv = document.createElement("div");
+            const content = msg.parts && msg.parts[0] ? msg.parts[0].text : "";
+            messageDiv.className = `chat-message ${
+              msg.role === "user" ? "user-message" : "assistant-message"
+            }`;
+            messageDiv.innerHTML =
+              msg.role === "user" ? content : marked.parse(content);
+            chatMessages.appendChild(messageDiv);
+          });
+        } else {
+          chatMessages.innerHTML = `<p class="text-center text-sm text-[--text-secondary] p-4">Hələ heç bir mesaj yoxdur. Blok-sxem yaradın və suallar verin.</p>`;
+        }
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      };
+
+      // --- Mermaid & Canvas ---
+      const initializePanZoom = (svgElement) => {
+        if (panZoomInstance) panZoomInstance.destroy();
+        try {
+          panZoomInstance = svgPanZoom(svgElement, {
+            zoomEnabled: true,
+            controlIconsEnabled: false,
+            fit: true,
+            center: true,
+            minZoom: 0.2,
+            maxZoom: 10,
+            zoomScaleSensitivity: 0.3,
+            panEnabled: true,
+            onPan: () => outputDiv.classList.remove("panning"),
+            beforePan: () => outputDiv.classList.add("panning"),
+          });
+          canvasControls.classList.remove("hidden");
+          window.addEventListener("resize", () => {
+            if (panZoomInstance) {
+              panZoomInstance.resize();
+            }
+          });
+          panZoomInstance.resize();
+          panZoomInstance.fit();
+          panZoomInstance.center();
+        } catch (e) {
+          console.error("SVG Pan Zoom initialization failed:", e);
+          errorMessage.textContent =
+            "Blok-sxem naviqasiyasını aktivləşdirmək mümkün olmadı.";
+          errorMessage.classList.remove("hidden");
+        }
+      };
+
+      window.showDetails = (nodeId) => {
+        if (detailsMap.has(nodeId)) {
+          const detailText = detailsMap.get(nodeId);
+          const nodeElement = document.querySelector(`[data-id="${nodeId}"]`);
+          modalTitle.textContent = nodeElement
+            ? nodeElement.textContent.trim()
+            : "Addımın İzahı";
+          modalContent.innerHTML = marked.parse(detailText);
+          modal.classList.remove("hidden");
+        }
+      };
+
+      async function renderMermaid(mermaidCode, details) {
+        try {
+          placeholderText.style.display = "none";
+          errorMessage.classList.add("hidden");
+
+          // Validate input parameters
+          if (!mermaidCode || typeof mermaidCode !== "string") {
+            throw new Error("Mermaid kodu boş və ya yanlış formatdadır");
+          }
+
+          if (!details || !(details instanceof Map)) {
+            details = new Map();
+          }
+
+          // Clean the mermaid code to prevent parsing errors
+          const cleanedCode = mermaidCode
+            // Fix arrow syntax issues
+            .replace(/--\s*(Hə|Yox|Yes|No)\s*--/g, "-->|$1|")
+            .replace(/-->/g, " --> ");
+
+          mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: "loose",
+            theme: "base",
+            themeVariables: {
+              background: "#111111",
+              primaryColor: "#222222",
+              primaryTextColor: "#ffffff",
+              lineColor: "#666666",
+              textColor: "#ffffff",
+            },
+          });
+
+          const { svg, bindFunctions } = await mermaid.render(
+            "graphDiv",
+            cleanedCode
+          );
+          outputDiv.innerHTML = svg;
+          if (bindFunctions) bindFunctions(outputDiv);
+
+          details.forEach((value, key) => {
+            const nodeElements = outputDiv.querySelectorAll(
+              `#${CSS.escape(key)}, .node[id$="-${key}"]`
+            );
+            nodeElements.forEach((node) => node.setAttribute("data-id", key));
+          });
+
+          const svgElement = outputDiv.querySelector("svg");
+          if (svgElement) {
+            svgElement.style.maxWidth = "100%";
+            initializePanZoom(svgElement);
+          }
+        } catch (error) {
+          console.error("Mermaid rendering error:", error);
+
+          let errorText = "Blok-sxem generasiya edilərkən xəta baş verdi.";
+
+          if (
+            error.message.includes("Lexical error") ||
+            error.message.includes("Unrecognized text")
+          ) {
+            errorText =
+              "Sintaksis xətası: Xüsusi simvollar problemi. Yenidən cəhd edin.";
+          } else if (error.message.includes("Parse error")) {
+            errorText =
+              "Blok-sxem formatında xəta. AI cavabı düzgün formatda deyil.";
+          }
+
+          errorMessage.textContent = errorText;
+          errorMessage.classList.remove("hidden");
+          outputDiv.innerHTML = `<p id="placeholder-text">Blok-sxem göstərilə bilmədi.</p>`;
+        }
+      }
+
+      // --- Main Logic ---
+      const generateFlowchart = async () => {
+        const prompt = userInput.value.trim();
+        const selectedLang = langSelect.value;
+        const apiKey = getApiKey();
+
+        if (!apiKey) {
+          apiModal.classList.remove("hidden");
+          updateApiStatus("⚠️ API açarı tələb olunur", "warning");
+          return;
+        }
+        if (!prompt) {
+          alert("Zəhmət olmasa, bir təsvir daxil edin.");
+          return;
+        }
+
+        loader.classList.remove("hidden");
+        btnText.textContent = "Generasiya edilir...";
+        generateBtn.disabled = true;
+        outputDiv.innerHTML = "";
+        errorMessage.classList.add("hidden");
+        placeholderText.style.display = "none";
+
+        const systemPrompt = `Sən, yeni başlayanlar üçün proqramlaşdırma müəllimisən. Vəzifən, istifadəçi tələbini analiz edərək, seçilmiş proqramlaşdırma dilində ultra-detallı, interaktiv blok-sxem yaratmaqdır.
+                SEÇİLMİŞ PROQRAMLAŞDIRMA DİLİ: ${selectedLang}
+
+                ƏSAS TƏLİMATLAR:
+                1.  İKİLİ FORMATDA ÇIXIŞ: Hər bir addım üçün iki hissə yaratmalısan: qısa başliq və detallı izah.
+                2.  QISA BAŞLIQ: Blok-sxemin özündə görünəcək çox qısa, bir neçə sözlük mətn.
+                3.  DETALLI İZAH: İstifadəçi bloka klikləyəndə popup-da görünəcək ətraflı izah. Bu izah addımın nə üçün lazım olduğunu, texniki detallarını və seçilmiş dildə kod nümunəsini ehtiva etməlidir. Kodu \`\`\`${selectedLang.toLowerCase()}__NL__...__NL__\`\`\` bloku içinə al.
+                4.  BLOK FORMLARI (ÇOX VACİB): 
+                   - BAŞLANĞIC/SON üçün: NodeID(("Mətn"))
+                   - ŞƏRT/QƏRAR üçün: NodeID{"Sual?"}
+                   - BÜTÜN DİGƏR ADDIMLAR üçün: NodeID["Mətn"]
+                   Database və ya xüsusi formalar istifadə etmə, yalnız bu 3 formanı istifadə et.
+                5.  XÜSUSİ FORMAT: Hər bir bloku yuxarıdakı formatda yarat. Sonra, ayrıca olaraq, komment şəklində detallı izahı əlavə et: %% NodeID:::DETALLI İZAH BURADA. Mütləq ':::' separatordan istifadə et. Yeni sətirlər üçün real yeni sətir (\n) yerinə __NL__ xüsusi mətnindən istifadə et. Kommentlər (%%) MÜTLƏQ öz ayrıca sətrində olmalıdır.
+                6.  İNTERAKTİVLİK: Hər node üçün 'click NodeID call showDetails("NodeID")' direktivini əlavə et. Bu, MÜTLƏQ hər bir node üçün edilməlidir.
+                7.  MİNİMUM BLOK SAYI: Yaranan qrafik minimum 15-20 blokdan ibarət olmalıdır. ÇOX VACİB: Boş və ya qısa cavablar verməkdən imtina et.
+                8.  SADƏCƏ MERMAID KODU ÇIXAR: Çıxışda əlavə mətn və ya \`\`\`mermaid bloku olmasın. Yalnız 'graph TD;' ilə başlayan saf Mermaid kodu olsun.
+                9.  MÜTLƏQ TƏLƏB: Cavabının ən azı 30 sətir uzunluqda olması məcburidir. Qısa cavablar qəbul edilmir.
+
+                NÜMUNƏ ÇIXIŞ:
+                graph TD;
+                    A1(("Start"))
+                    B1["Import Library"]
+                    C1["Get User Input"]
+                    D1{"Is Number Even?"}
+                    E1["Display Even"]
+                    F1["Display Odd"]
+                    G1(("End"))
+                    
+                    A1 --> B1
+                    B1 --> C1
+                    C1 --> D1
+                    D1 -->|Yes| E1
+                    D1 -->|No| F1
+                    E1 --> G1
+                    F1 --> G1
+                    
+                    click A1 call showDetails("A1")
+                    click B1 call showDetails("B1")
+                    click C1 call showDetails("C1")
+                    click D1 call showDetails("D1")
+                    click E1 call showDetails("E1")
+                    click F1 call showDetails("F1")
+                    click G1 call showDetails("G1")
+
+                %% A1:::Bu addım proqramın başlanğıc nöqtəsini bildirir. Heç bir kod tələb olunmur.
+                %% B1:::Bu addımda istifadəçidən məlumat almaq üçün lazım olan kitabxananı idxal edirik.__NL__\`\`\`${selectedLang.toLowerCase()}__NL__// Kitabxana idxalı__NL__\`\`\`
+            `;
+        try {
+          let rawMermaidCode = await callGemini(systemPrompt, [
+            {
+              role: "user",
+              parts: [{ text: `İstifadəçi təsviri: "${prompt}"` }],
+            },
+          ]);
+          rawMermaidCode = rawMermaidCode
+            .replace(/^```mermaid\s*/, "")
+            .replace(/```\s*$/, "")
+            .trim();
+
+          // Check if we got valid content from AI
+          if (!rawMermaidCode || rawMermaidCode.length < 20) {
+            throw new Error(
+              "AI-dən yetərli cavab alınmadı. Zəhmət olmasa yenidən cəhd edin."
+            );
+          }
+
+          const newDetailsMap = new Map();
+          const lines = rawMermaidCode.split("\n");
+          const cleanLines = lines
+            .map((line) => {
+              const trimmed = line.trim();
+              if (trimmed.startsWith("%%")) {
+                const parts = line.replace("%%", "").split(":::");
+                if (parts.length > 1) {
+                  const id = parts[0].trim();
+                  const detail = parts
+                    .slice(1)
+                    .join(":::")
+                    .replace(/__NL__/g, "\n");
+                  newDetailsMap.set(id, detail);
+                }
+                return null; // Remove comment line from final code
+              }
+              return line;
+            })
+            .filter(Boolean);
+
+          const mermaidCode = cleanLines.join("\n");
+
+          // Validate that we have actual mermaid content
+          if (
+            !mermaidCode.trim() ||
+            !mermaidCode.includes("graph") ||
+            !mermaidCode.includes("-->")
+          ) {
+            throw new Error(
+              "AI-dən alınan cavab düzgün Mermaid kodu deyil. Yenidən cəhd edin."
+            );
+          }
+
+          // Check if we have enough nodes (at least 3 for a meaningful flowchart)
+          const nodeCount = (mermaidCode.match(/[A-Z]\d*[\[\{\(]/g) || [])
+            .length;
+          if (nodeCount < 3) {
+            throw new Error(
+              "Yaradılan blok-sxem çox sadədir. Daha ətraflı təsvir daxil edin."
+            );
+          }
+
+          detailsMap = newDetailsMap;
+
+          await renderMermaid(mermaidCode, detailsMap);
+
+          updateCurrentSession({
+            mermaidContext: mermaidCode,
+            detailsMap: Array.from(detailsMap.entries()),
+            conversationHistory: [],
+            userInput: prompt,
+            lang: selectedLang,
+          });
+          updateChatUI();
+        } catch (error) {
+          console.error("Flowchart Error:", error);
+
+          let userFriendlyMessage = error.message;
+
+          // Provide more specific guidance based on error type
+          if (error.message.includes("AI-dən yetərli cavab alınmadı")) {
+            userFriendlyMessage =
+              "AI-dən cavab alınmadı. API açarınızı yoxlayın və ya bir az gözləyib yenidən cəhd edin.";
+          } else if (
+            error.message.includes("Yaradılan blok-sxem çox sadədir")
+          ) {
+            userFriendlyMessage =
+              "Yaradılan blok-sxem çox sadədir. Zəhmət olmasa daha ətraflı və detallı təsvir yazın. Məsələn, addım-addım nə etmək istədiyinizi izah edin.";
+          } else if (error.message.includes("API")) {
+            userFriendlyMessage =
+              "API xətası baş verdi. Zəhmət olmasa API açarınızı yoxlayın və yenidən cəhd edin.";
+          }
+
+          errorMessage.textContent = userFriendlyMessage;
+          errorMessage.classList.remove("hidden");
+        } finally {
+          loader.classList.add("hidden");
+          btnText.textContent = "Generasiya et";
+          generateBtn.disabled = false;
+        }
+      };
+
+      const sendMessage = async () => {
+        const message = chatInput.value.trim();
+        const session = sessions.find((s) => s.id === activeSessionId);
+        if (!message || !session || !session.mermaidContext) {
+          alert(
+            "Zəhmət olmasa, əvvəlcə blok-sxem yaradın və sonra sualınızı yazın."
+          );
+          return;
+        }
+
+        session.conversationHistory = session.conversationHistory || [];
+        session.conversationHistory.push({
+          role: "user",
+          parts: [{ text: message }],
+        });
+        chatInput.value = "";
+        updateChatUI();
+
+        const chatPrompt = `Sən, yeni başlayanlar üçün proqramlaşdırma müəllimisən. Vəzifən, aşağıda verilmiş blok-sxem konteksti haqqında istifadəçinin suallarını cavablandırmaqdır. İstifadəçi heç nə bilmir.
+                VACİB QAYDALAR:
+                1. Cavablarını formatlamaq üçün Markdown istifadə et. Məsələn, siyahılar üçün nömrəli və ya işarəli siyahılar, vacib sözlər üçün **qalın** yazı, kod nümunələri üçün isə \`inline kod\` və ya kod blokları (\`\`\`) istifadə et.
+                2. Cavabların ultra-detallı və addım-addım olmalıdır. Ümumi danışma.
+                3. Bir kod parçasını izah edərkən, hər bir sətrin, dəyişənin və funksiyanın mənasını açıqla.
+                4. YALNIZ verilmiş blok-sxem və onunla əlaqəli proqramlaşdırma mövzuları haqqında danış. Kənar suallara cavab verməkdən imtina et və istifadəçini nəzakətlə mövzuya qaytar.
+
+                Blok-sxem konteksti (istifadəçi görmür, yalnız sən kontekst üçün istifadə edirsən): \`\`\`mermaid\n${
+                  session.mermaidContext
+                }\n\`\`\`.
+                Detallar (istifadəçi görmür): ${JSON.stringify(
+                  Array.from(detailsMap.entries())
+                )}
+
+                İstifadəçi sualı: ${message}`;
+
+        try {
+          const aiResponse = await callGemini(
+            chatPrompt,
+            session.conversationHistory.slice(0, -1)
+          );
+          session.conversationHistory.push({
+            role: "model",
+            parts: [{ text: aiResponse }],
+          });
+          updateCurrentSession({
+            conversationHistory: session.conversationHistory,
+          });
+          updateChatUI();
+        } catch (error) {
+          console.error("Chat error:", error);
+          session.conversationHistory.push({
+            role: "model",
+            parts: [{ text: `Xəta baş verdi: ${error.message}` }],
+          });
+          updateChatUI();
+        }
+      };
+
+      const callGemini = async (systemText, history = []) => {
+        const apiKey = getApiKey();
+        if (!apiKey)
+          throw new Error(
+            "API açarı tapılmadı. Zəhmət olmasa tənzimləmələrdən API açarınızı əlavə edin."
+          );
+
+        const contents = [
+          ...history,
+          { role: "user", parts: [{ text: systemText }] },
+        ];
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents }),
+        });
+
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(
+            `API Xətası: ${response.status}. Cavab: ${errorBody}`
+          );
+        }
+
+        const result = await response.json();
+        if (result.candidates && result.candidates[0].content) {
+          return result.candidates[0].content.parts[0].text;
+        } else {
+          throw new Error(
+            result.promptFeedback
+              ? `Sorğu bloklandı: ${result.promptFeedback.blockReason}`
+              : "API cavabında gözlənilməz format."
+          );
+        }
+      };
+
+      // --- Event Listeners ---
+      document.addEventListener("DOMContentLoaded", async () => {
+        loadSessions();
+        loadApiKeyFromStorage();
+        if (sessions.length === 0) {
+          await createNewSession();
+        } else {
+          await loadSession(activeSessionId);
+        }
+      });
+
+      generateBtn.addEventListener("click", generateFlowchart);
+      userInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          generateFlowchart();
+        }
+      });
+
+      sendBtn.addEventListener("click", sendMessage);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      newChatBtn.addEventListener("click", createNewSession);
+      userInput.addEventListener("input", () =>
+        updateCurrentSession({ userInput: userInput.value })
+      );
+      langSelect.addEventListener("change", () =>
+        updateCurrentSession({ lang: langSelect.value })
+      );
+
+      // Modals
+      modalClose.addEventListener("click", () => modal.classList.add("hidden"));
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.add("hidden");
+      });
+      apiSettingsBtn.addEventListener("click", () =>
+        apiModal.classList.remove("hidden")
+      );
+      closeApiModal.addEventListener("click", () =>
+        apiModal.classList.add("hidden")
+      );
+      apiModal.addEventListener("click", (e) => {
+        if (e.target === apiModal) apiModal.classList.add("hidden");
+      });
+      toggleApiVisibility.addEventListener("click", () => {
+        apiKeyInput.type =
+          apiKeyInput.type === "password" ? "text" : "password";
+      });
+      saveApiKey.addEventListener("click", () => {
+        const apiKey = apiKeyInput.value.trim();
+        if (apiKey) {
+          saveApiKeyToStorage(apiKey);
+          updateApiStatus("✅ API açarı saxlanıldı", "success");
+          setTimeout(() => apiModal.classList.add("hidden"), 1000);
+        } else {
+          updateApiStatus("❌ API açarı boşdur", "error");
+        }
+      });
+      testApiKey.addEventListener("click", () =>
+        testApiConnection(apiKeyInput.value.trim())
+      );
+      apiKeyInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          saveApiKey.click();
+        }
+      });
+
+      // Canvas Controls
+      document
+        .getElementById("zoom-in")
+        .addEventListener("click", () => panZoomInstance?.zoomIn());
+      document
+        .getElementById("zoom-out")
+        .addEventListener("click", () => panZoomInstance?.zoomOut());
+      document.getElementById("reset-pan").addEventListener("click", () => {
+        if (panZoomInstance) {
+          panZoomInstance.reset();
+          panZoomInstance.center();
+        }
+      });
+    </script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
