@@ -20,7 +20,7 @@ Alqoritminizi sadə dillə yazırsınız, proqramlaşdırma dilini seçirsiniz v
 
 **Blok-sxem yaradılması**
 
-- 25+ proqramlaşdırma dili dəstəyi (JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Rust və s.)
+- 9 proqramlaşdırma dili dəstəyi (C#, C++, Java, JavaScript, PHP, Python, SQL, Swift, TypeScript)
 - Google Gemini 2.0 Flash AI texnologiyası
 - Mermaid.js ilə peşəkar diaqramlar
 
