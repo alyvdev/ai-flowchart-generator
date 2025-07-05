@@ -8,6 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -163,8 +170,27 @@
           <div
             class="bg-[--surface-2] border border-[--border-color] rounded-xl p-4"
           >
+            <div class="mb-3">
+              <div
+                class="flex border border-[--border-color] rounded-lg p-1 bg-[--surface-3] w-full"
+              >
+                <button
+                  id="mode-desc"
+                  class="flex-1 py-1.5 text-sm font-semibold rounded-md transition-colors"
+                >
+                  Təsvirə görə
+                </button>
+                <button
+                  id="mode-code"
+                  class="flex-1 py-1.5 text-sm font-semibold rounded-md transition-colors"
+                >
+                  Koda görə
+                </button>
+              </div>
+            </div>
             <label
               for="userInput"
+              id="input-label"
               class="block text-md font-semibold text-[--text-primary] mb-3"
               >1. Alqoritmin təsviri</label
             >
@@ -260,6 +286,27 @@
               id="history-list"
               class="space-y-2 max-h-48 overflow-y-auto pr-2"
             ></ul>
+          </div>
+
+          <!-- Code Section -->
+          <div
+            id="code-generation-section"
+            class="bg-[--surface-2] border border-[--border-color] rounded-xl p-4 hidden"
+          >
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="text-md font-semibold text-[--text-primary]">
+                Generasiya edilmiş kod
+              </h2>
+              <button
+                id="copy-code-btn"
+                class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-lg text-xs"
+              >
+                Kopyala
+              </button>
+            </div>
+            <div class="h-64 overflow-y-auto">
+              <pre><code id="code-block" class="!bg-transparent"></code></pre>
+            </div>
           </div>
         </div>
 
@@ -367,6 +414,70 @@
                 <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7" />
               </svg>
             </button>
+            <div class="w-px h-5 bg-[--border-color] mx-1"></div>
+            <button
+              id="export-svg"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+              title="SVG olaraq ixrac et"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </button>
+            <button
+              id="export-png"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+              title="PNG olaraq ixrac et"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </button>
+            <button
+              id="export-pdf"
+              class="p-2 rounded-md hover:bg-[--surface-2] transition-colors"
+              title="PDF olaraq ixrac et"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                ></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </button>
           </div>
         </div>
         <div
@@ -375,6 +486,20 @@
         >
           <p id="placeholder-text">Blok-sxeminiz burada göstəriləcək.</p>
           <div id="error-message" class="text-red-400 hidden"></div>
+        </div>
+        <div
+          id="code-output"
+          class="w-full h-full bg-[--surface-1] hidden relative"
+        >
+          <button
+            id="copy-code-btn"
+            class="absolute top-4 right-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-1 px-3 rounded-lg text-xs z-10 hidden"
+          >
+            Kopyala
+          </button>
+          <pre
+            class="h-full overflow-auto"
+          ><code id="code-block" class="h-full"></code></pre>
         </div>
       </main>
     </div>
@@ -600,8 +725,24 @@
 
       // Canvas Controls
       const canvasControls = document.getElementById("canvas-controls");
+      const exportSvgBtn = document.getElementById("export-svg");
+      const exportPngBtn = document.getElementById("export-png");
+      const exportPdfBtn = document.getElementById("export-pdf");
+
+      // Code generation elements
+      const codeGenerationSection = document.getElementById(
+        "code-generation-section"
+      );
+      const codeBlock = document.getElementById("code-block");
+      const copyCodeBtn = document.getElementById("copy-code-btn");
+
+      // Mode switch
+      const modeDescBtn = document.getElementById("mode-desc");
+      const modeCodeBtn = document.getElementById("mode-code");
+      const inputLabel = document.getElementById("input-label");
 
       // --- State Management ---
+      let inputMode = "description"; // 'description' or 'code'
       let sessions = [];
       let activeSessionId = null;
       let detailsMap = new Map();
@@ -689,6 +830,7 @@
           userInput: "",
           lang: "JavaScript",
           mermaidContext: "",
+          generatedCode: "",
           detailsMap: [],
           conversationHistory: [],
           createdAt: new Date().toISOString(),
@@ -714,6 +856,14 @@
 
         if (session.mermaidContext) {
           await renderMermaid(session.mermaidContext, detailsMap);
+        }
+        if (session.generatedCode) {
+          codeGenerationSection.classList.remove("hidden");
+          codeBlock.textContent = session.generatedCode;
+          hljs.highlightElement(codeBlock);
+        } else {
+          codeGenerationSection.classList.add("hidden");
+          codeBlock.textContent = "";
         }
 
         updateChatUI();
@@ -761,6 +911,8 @@
         canvasControls.classList.add("hidden");
         detailsMap.clear();
         chatMessages.innerHTML = "";
+        codeGenerationSection.classList.add("hidden");
+        codeBlock.textContent = "";
       };
 
       const renderHistory = () => {
@@ -954,6 +1106,26 @@
       }
 
       // --- Main Logic ---
+      const setInputMode = (mode) => {
+        inputMode = mode;
+        if (mode === "description") {
+          modeDescBtn.classList.add("bg-[--surface-1]");
+          modeDescBtn.classList.remove("text-[--text-secondary]");
+          modeCodeBtn.classList.remove("bg-[--surface-1]");
+          modeCodeBtn.classList.add("text-[--text-secondary]");
+          inputLabel.textContent = "1. Alqoritmin təsviri";
+          userInput.placeholder =
+            "Məsələn: İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi...";
+        } else {
+          modeCodeBtn.classList.add("bg-[--surface-1]");
+          modeCodeBtn.classList.remove("text-[--text-secondary]");
+          modeDescBtn.classList.remove("bg-[--surface-1]");
+          modeDescBtn.classList.add("text-[--text-secondary]");
+          inputLabel.textContent = "1. Kodu daxil edin";
+          userInput.placeholder = "Kodu buraya yapışdırın...";
+        }
+      };
+
       const generateFlowchart = async () => {
         const prompt = userInput.value.trim();
         const selectedLang = langSelect.value;
@@ -976,94 +1148,102 @@
         errorMessage.classList.add("hidden");
         placeholderText.style.display = "none";
 
-        const systemPrompt = `Sən, yeni başlayanlar üçün proqramlaşdırma müəllimisən. Vəzifən, istifadəçi tələbini analiz edərək, seçilmiş proqramlaşdırma dilində ultra-detallı, interaktiv blok-sxem yaratmaqdır.
+        const getSystemPrompt = () => {
+          const commonInstructions = `
+Sən, blok-sxemlər yaradan ixtisaslaşmış bir süni intellektsən. Sənin əsas vəzifən — istifadəçinin təqdim etdiyi təsvir və ya proqram kodunu analiz edərək **interaktiv və izahlı Mermaid.js** blok-sxemi yaratmaqdır.
+
+🧠 MİSSİYAN:
+- Giriş məlumatından məntiqli ardıcıllıq çıxar.
+- Addımlar arasında əlaqələri düzgün müəyyən et.
+- Gələcəkdə genişləndirilə biləcək strukturda sxem tərtib et.
+
+---
+
+📤 **ÇIXIŞ FORMATININ QAYDALARI**  
+Cavab yalnız və yalnız **etibarlı JSON** obyekti olmalıdır. Heç bir əlavə mətn, izahat və ya formatlama olmamalıdır (məs: \`\`\`, HTML, yazılı təlimat **olMAmalıdır**).
+
+JSON obyektində yalnız iki açar olmalıdır:
+
+1. **\`diagram\`** (string):
+   - Mermaid.js sintaksisi ilə yazılmış tam sxemi ehtiva etməlidir.
+   - Yalnız **"graph TD;"** ilə başlayan **Mermaid Directed Graph** sxemi olmalıdır.
+   - Hər node üçün unikal ID istifadə olunmalıdır (məs: A1, B1, C1).
+   - Node mətnlərində xüsusi simvollar varsa, **həmişə ikiqat dırnaq ("")** içində yazılmalıdır.
+   - Hər node üçün klik funksiyası yazılmalıdır:
+     \`click NODE_ID call showDetails("NODE_ID")\`
+
+2. **\`details\`** (object):
+   - Açarlar (key) sxemdəki node ID-ləri ilə eyni olmalıdır.
+   - Dəyərlər (value) hər bir node-un funksional izahı olmalıdır.
+   - **Hər bir izah mütləq minimum bir kod parçası (code block) ilə müşayiət olunmalıdır.**
+   - Kodlar uyğun dildə yazılmış və Markdown içində \`\`\`language\`\`\` bloklarında verilməlidir.
+   - Kod parçası, node-un təmsil etdiyi addımın real implementasiyasını əks etdirməlidir.
+   - Şərh (izah) və kod birgə olmalıdır – təkcə izah və ya təkcə kod **qəbul edilmir**.
+
+---
+
+🧾 **MERMAID SXEMİ YAZARKƏN DİQQƏT**:
+- Sxem **aydın**, **məntiqi**, və **minimum 8 node**-dan ibarət olmalıdır.
+- Hər bir şərtli keçid (“Bəli/Xeyr”, “True/False”) düzgün ayrılmalıdır.
+- Bütün yollar qapanmalı, heç bir node “boşda” qalmamalıdır.
+- Hər node-un funksiyası və implementasiyası \`details\` obyektində **tam və kodlu şəkildə** izah olunmalıdır.
+
+---
+
+📌 **NÜMUNƏ JSON ÇIXIŞI**:
+
+\`\`\`json
+{
+  "diagram": "graph TD;\\nA1((\\"Başla\\")) --> B1[\\"İstifadəçidən ədəd al\\"];\\nB1 --> C1{\\"Ədəd > 0?\\"};\\nC1 -->|Bəli| D1[\\"Müsbət\\"];\\nC1 -->|Xeyr| E1{\\"Ədəd = 0?\\"};\\nE1 -->|Bəli| F1[\\"Sıfır\\"];\\nE1 -->|Xeyr| G1[\\"Mənfi\\"];\\nD1 --> H1((\\"Bitir\\"));\\nF1 --> H1;\\nG1 --> H1;\\nclick A1 call showDetails(\\"A1\\");\\nclick B1 call showDetails(\\"B1\\");\\nclick C1 call showDetails(\\"C1\\");\\nclick D1 call showDetails(\\"D1\\");\\nclick E1 call showDetails(\\"E1\\");\\nclick F1 call showDetails(\\"F1\\");\\nclick G1 call showDetails(\\"G1\\");\\nclick H1 call showDetails(\\"H1\\");",
+  "details": {
+    "A1": "Proqramın başlanğıcı.\\n\\n\`\`\`javascript\\n// Başlanğıc nöqtəsi\\n\`\`\`",
+    "B1": "İstifadəçidən ədəd alınır.\\n\\n\`\`\`javascript\\nconst num = parseInt(prompt(\\"Ədəd daxil edin:\\"));\\n\`\`\`",
+    "C1": "Ədədin müsbət olub-olmadığını yoxlayır.\\n\\n\`\`\`javascript\\nif (num > 0) {\\n  // Müsbət\\n} else {\\n  // Sıfır və ya mənfi\\n}\\n\`\`\`",
+    "D1": "Əgər ədəd müsbətdirsə.\\n\\n\`\`\`javascript\\nconsole.log(\\"Ədəd müsbətdir\\");\\n\`\`\`",
+    "E1": "Əgər ədəd müsbət deyilsə, sıfıra bərabər olub-olmadığını yoxlayır.\\n\\n\`\`\`javascript\\nif (num === 0) {\\n  // Sıfır\\n} else {\\n  // Mənfi\\n}\\n\`\`\`",
+    "F1": "Əgər ədəd sıfırdır.\\n\\n\`\`\`javascript\\nconsole.log(\\"Ədəd sıfırdır\\");\\n\`\`\`",
+    "G1": "Əgər ədəd mənfidirsə.\\n\\n\`\`\`javascript\\nconsole.log(\\"Ədəd mənfidir\\");\\n\`\`\`",
+    "H1": "Proqramın sonu.\\n\\n\`\`\`javascript\\n// Bitdi\\n\`\`\`"
+  }
+}
+\`\`\`
+`;
+
+          if (inputMode === "description") {
+            return `Sən, yeni başlayanlar üçün proqramlaşdırma müəllimisən. Vəzifən, istifadəçi tələbini analiz edərək, seçilmiş proqramlaşdırma dilində ultra-detallı, interaktiv blok-sxem yaratmaqdır.
                 SEÇİLMİŞ PROQRAMLAŞDIRMA DİLİ: ${selectedLang}
+                ${commonInstructions}`;
+          } else {
+            // mode === 'code'
+            return `Sən, ekspert kod analitiki və proqramlaşdırma müəllimisən. Vəzifən, təqdim olunan ${selectedLang} kodunu analiz edərək onun məntiqini izah edən detallı, interaktiv blok-sxem yaratmaqdır.
+                ${commonInstructions}`;
+          }
+        };
 
-                ƏSAS TƏLİMATLAR:
-                1.  İKİLİ FORMATDA ÇIXIŞ: Hər bir addım üçün iki hissə yaratmalısan: qısa başliq və detallı izah.
-                2.  QISA BAŞLIQ: Blok-sxemin özündə görünəcək çox qısa, bir neçə sözlük mətn.
-                3.  DETALLI İZAH: İstifadəçi bloka klikləyəndə popup-da görünəcək ətraflı izah. Bu izah addımın nə üçün lazım olduğunu, texniki detallarını və seçilmiş dildə kod nümunəsini ehtiva etməlidir. Kodu \`\`\`${selectedLang.toLowerCase()}__NL__...__NL__\`\`\` bloku içinə al.
-                4.  BLOK FORMLARI (ÇOX VACİB): 
-                   - BAŞLANĞIC/SON üçün: NodeID(("Mətn"))
-                   - ŞƏRT/QƏRAR üçün: NodeID{"Sual?"}
-                   - BÜTÜN DİGƏR ADDIMLAR üçün: NodeID["Mətn"]
-                   Database və ya xüsusi formalar istifadə etmə, yalnız bu 3 formanı istifadə et.
-                5.  XÜSUSİ FORMAT: Hər bir bloku yuxarıdakı formatda yarat. Sonra, ayrıca olaraq, komment şəklində detallı izahı əlavə et: %% NodeID:::DETALLI İZAH BURADA. Mütləq ':::' separatordan istifadə et. Yeni sətirlər üçün real yeni sətir (\n) yerinə __NL__ xüsusi mətnindən istifadə et. Kommentlər (%%) MÜTLƏQ öz ayrıca sətrində olmalıdır.
-                6.  İNTERAKTİVLİK: Hər node üçün 'click NodeID call showDetails("NodeID")' direktivini əlavə et. Bu, MÜTLƏQ hər bir node üçün edilməlidir.
-                7.  MİNİMUM BLOK SAYI: Yaranan qrafik minimum 15-20 blokdan ibarət olmalıdır. ÇOX VACİB: Boş və ya qısa cavablar verməkdən imtina et.
-                8.  SADƏCƏ MERMAID KODU ÇIXAR: Çıxışda əlavə mətn və ya \`\`\`mermaid bloku olmasın. Yalnız 'graph TD;' ilə başlayan saf Mermaid kodu olsun.
-                9.  MÜTLƏQ TƏLƏB: Cavabının ən azı 30 sətir uzunluqda olması məcburidir. Qısa cavablar qəbul edilmir.
+        const systemPrompt = getSystemPrompt();
+        const userContent =
+          inputMode === "description"
+            ? `İstifadəçi təsviri: "${prompt}"`
+            : `Təhlil ediləcək ${selectedLang} kodu: \`\`\`${selectedLang.toLowerCase()}\n${prompt}\n\`\`\``;
 
-                NÜMUNƏ ÇIXIŞ:
-                graph TD;
-                    A1(("Start"))
-                    B1["Import Library"]
-                    C1["Get User Input"]
-                    D1{"Is Number Even?"}
-                    E1["Display Even"]
-                    F1["Display Odd"]
-                    G1(("End"))
-                    
-                    A1 --> B1
-                    B1 --> C1
-                    C1 --> D1
-                    D1 -->|Yes| E1
-                    D1 -->|No| F1
-                    E1 --> G1
-                    F1 --> G1
-                    
-                    click A1 call showDetails("A1")
-                    click B1 call showDetails("B1")
-                    click C1 call showDetails("C1")
-                    click D1 call showDetails("D1")
-                    click E1 call showDetails("E1")
-                    click F1 call showDetails("F1")
-                    click G1 call showDetails("G1")
-
-                %% A1:::Bu addım proqramın başlanğıc nöqtəsini bildirir. Heç bir kod tələb olunmur.
-                %% B1:::Bu addımda istifadəçidən məlumat almaq üçün lazım olan kitabxananı idxal edirik.__NL__\`\`\`${selectedLang.toLowerCase()}__NL__// Kitabxana idxalı__NL__\`\`\`
-            `;
         try {
-          let rawMermaidCode = await callGemini(systemPrompt, [
+          let jsonResponse = await callGemini(systemPrompt, [
             {
               role: "user",
-              parts: [{ text: `İstifadəçi təsviri: "${prompt}"` }],
+              parts: [{ text: userContent }],
             },
           ]);
-          rawMermaidCode = rawMermaidCode
-            .replace(/^```mermaid\s*/, "")
-            .replace(/```\s*$/, "")
-            .trim();
 
-          // Check if we got valid content from AI
-          if (!rawMermaidCode || rawMermaidCode.length < 20) {
-            throw new Error(
-              "AI-dən yetərli cavab alınmadı. Zəhmət olmasa yenidən cəhd edin."
-            );
+          // Clean the response to get only the JSON part
+          const jsonMatch = jsonResponse.match(/```json\n([\s\S]*?)\n```/);
+          if (!jsonMatch) {
+            throw new Error("AI cavabı düzgün JSON formatında deyil.");
           }
+          jsonResponse = jsonMatch[1];
 
-          const newDetailsMap = new Map();
-          const lines = rawMermaidCode.split("\n");
-          const cleanLines = lines
-            .map((line) => {
-              const trimmed = line.trim();
-              if (trimmed.startsWith("%%")) {
-                const parts = line.replace("%%", "").split(":::");
-                if (parts.length > 1) {
-                  const id = parts[0].trim();
-                  const detail = parts
-                    .slice(1)
-                    .join(":::")
-                    .replace(/__NL__/g, "\n");
-                  newDetailsMap.set(id, detail);
-                }
-                return null; // Remove comment line from final code
-              }
-              return line;
-            })
-            .filter(Boolean);
-
-          const mermaidCode = cleanLines.join("\n");
+          const parsedData = JSON.parse(jsonResponse);
+          const mermaidCode = parsedData.diagram;
+          const newDetailsMap = new Map(Object.entries(parsedData.details));
 
           // Validate that we have actual mermaid content
           if (
@@ -1095,8 +1275,14 @@
             conversationHistory: [],
             userInput: prompt,
             lang: selectedLang,
+            generatedCode: "", // Clear old code
           });
           updateChatUI();
+
+          // Now, generate the code
+          if (inputMode === "description") {
+            await generateCode(prompt, selectedLang);
+          }
         } catch (error) {
           console.error("Flowchart Error:", error);
 
@@ -1182,6 +1368,33 @@
         }
       };
 
+      const generateCode = async (description, language) => {
+        try {
+          codeGenerationSection.classList.remove("hidden");
+          codeBlock.textContent = "// Kod generasiya edilir...";
+          const codePrompt = `Sən ${language} dilində ekspert proqramçısan. Aşağıdakı təsvirə əsasən tam, işlək və yaxşı şərh edilmiş bir kod faylı yarat. Yalnız xam kodu çıxart, əlavə izahat və ya markdown formatlaması olmadan.
+                    
+                    Təsvir: "${description}"`;
+
+          const generatedCode = await callGemini(codePrompt);
+          if (generatedCode) {
+            const cleanedCode = generatedCode
+              .replace(/^```[a-z]*\n/, "")
+              .replace(/```$/, "")
+              .trim();
+            codeGenerationSection.classList.remove("hidden");
+            codeBlock.textContent = cleanedCode;
+            // Fix re-highlighting issue
+            delete codeBlock.dataset.highlighted;
+            hljs.highlightElement(codeBlock);
+            updateCurrentSession({ generatedCode: cleanedCode });
+          }
+        } catch (e) {
+          console.error("Code generation error:", e);
+          codeBlock.textContent = `// Kod generasiya edilərkən xəta baş verdi: ${e.message}`;
+        }
+      };
+
       const callGemini = async (systemText, history = []) => {
         const apiKey = getApiKey();
         if (!apiKey)
@@ -1229,9 +1442,21 @@
         } else {
           await loadSession(activeSessionId);
         }
+        setInputMode("description"); // Set initial mode
+      });
+
+      copyCodeBtn.addEventListener("click", () => {
+        navigator.clipboard.writeText(codeBlock.textContent).then(() => {
+          copyCodeBtn.textContent = "Kopyalandı!";
+          setTimeout(() => {
+            copyCodeBtn.textContent = "Kopyala";
+          }, 2000);
+        });
       });
 
       generateBtn.addEventListener("click", generateFlowchart);
+      modeDescBtn.addEventListener("click", () => setInputMode("description"));
+      modeCodeBtn.addEventListener("click", () => setInputMode("code"));
       userInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
@@ -1306,6 +1531,116 @@
           panZoomInstance.center();
         }
       });
+
+      // --- Export Logic ---
+      const getTimestamp = () => {
+        const d = new Date();
+        return `${d.getFullYear()}${(d.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}${d.getDate().toString().padStart(2, "0")}_${d
+          .getHours()
+          .toString()
+          .padStart(2, "0")}${d.getMinutes().toString().padStart(2, "0")}${d
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}`;
+      };
+
+      const triggerDownload = (href, filename) => {
+        const link = document.createElement("a");
+        link.href = href;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+      };
+
+      exportSvgBtn.addEventListener("click", () => {
+        const svgElement = outputDiv.querySelector("svg");
+        if (!svgElement) {
+          alert("İxrac ediləcək blok-sxem tapılmadı.");
+          return;
+        }
+        const svgData = new XMLSerializer().serializeToString(svgElement);
+        const blob = new Blob([svgData], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+        triggerDownload(url, `flowchart_${getTimestamp()}.svg`);
+      });
+
+      const exportToImage = (format = "png") => {
+        const svgElement = outputDiv.querySelector("svg");
+        if (!svgElement) {
+          alert("İxrac ediləcək blok-sxem tapılmadı.");
+          return;
+        }
+
+        // 1. Serialize SVG and create a data URL
+        const svgData = new XMLSerializer().serializeToString(svgElement);
+        // We use btoa to encode the SVG data to base64, and unescape(encodeURIComponent()) to handle UTF-8 characters correctly.
+        const svgUrl =
+          "data:image/svg+xml;base64," +
+          btoa(unescape(encodeURIComponent(svgData)));
+
+        // 2. Create an Image
+        const img = new Image();
+        img.onload = () => {
+          // 3. Get the actual size and position of the SVG content
+          const bbox = svgElement.getBBox();
+          const scale = 2; // For higher resolution
+          const canvas = document.createElement("canvas");
+
+          // Set canvas dimensions to the tight bounding box of the content
+          canvas.width = bbox.width * scale;
+          canvas.height = bbox.height * scale;
+          const ctx = canvas.getContext("2d");
+
+          // For PDFs, fill with a white background. For PNGs, leave it transparent.
+          if (format === "pdf") {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          // Translate the canvas context to crop out the empty space
+          ctx.translate(-bbox.x * scale, -bbox.y * scale);
+          // Scale the context to get a higher resolution image
+          ctx.scale(scale, scale);
+          // Draw the image. The translation will clip it correctly.
+          ctx.drawImage(img, 0, 0);
+
+          // 4. Trigger download
+          if (format === "png") {
+            const pngUrl = canvas.toDataURL("image/png");
+            triggerDownload(pngUrl, `flowchart_${getTimestamp()}.png`);
+          } else if (format === "pdf") {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+              orientation: canvas.width > canvas.height ? "l" : "p",
+              unit: "px",
+              format: [canvas.width, canvas.height],
+            });
+            pdf.addImage(
+              canvas.toDataURL("image/png"),
+              "PNG",
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+            pdf.save(`flowchart_${getTimestamp()}.pdf`);
+          }
+        };
+        img.onerror = (e) => {
+          console.error("Image loading error:", e);
+          alert(
+            "Şəkil ixrac edilərkən xəta baş verdi. Zəhmət olmasa, konsolu yoxlayın."
+          );
+        };
+        img.src = svgUrl;
+      };
+
+      exportPngBtn.addEventListener("click", () => exportToImage("png"));
+      exportPdfBtn.addEventListener("click", () => exportToImage("pdf"));
     </script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>

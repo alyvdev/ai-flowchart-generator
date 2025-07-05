@@ -8,6 +8,16 @@ Alqoritminizi sadə dillə yazırsınız, proqramlaşdırma dilini seçirsiniz v
 
 ## Əsas xüsusiyyətlər
 
+**İki tərəfli generasiya (Two-way Generation)**
+
+- **Təsvirdən blok-sxemə:** Alqoritminizi sadə mətnlə təsvir edin, sistem sizin üçün vizual blok-sxem yaratsın.
+- **Koddan blok-sxemə:** Mövcud kodunuzu daxil edərək onun məntiqi axışını göstərən blok-sxem generasiya edin.
+- **Təsvirdən koda:** Alqoritm təsvirindən həm blok-sxem, həm də seçilmiş proqramlaşdırma dilində tam işlək kod əldə edin.
+
+**İxrac funksiyaları (Export)**
+
+- Yaradılan blok-sxemləri **SVG**, **PNG** (şəffaf arxa fon ilə) və **PDF** formatlarında ixrac edin.
+
 **Blok-sxem yaradılması**
 
 - 25+ proqramlaşdırma dili dəstəyi (JavaScript, Python, Java, C++, C#, PHP, Ruby, Go, Rust və s.)
@@ -48,6 +58,9 @@ Alqoritminizi sadə dillə yazırsınız, proqramlaşdırma dilini seçirsiniz v
 **Kitabxanalar**
 
 - Mermaid.js (diaqram yaradılması)
+- highlight.js (sintaksis işıqlandırma)
+- html2canvas (PNG/PDF ixracı üçün)
+- jsPDF (PDF ixracı üçün)
 - SVG Pan Zoom (interaktiv zoom)
 - Marked.js (markdown parser)
 - Google Fonts (Inter)
@@ -105,14 +118,23 @@ C#, C++, Java, JavaScript, PHP, Python, SQL, Swift, TypeScript.
 
 ## İstifadə təlimatı
 
-1. **Alqoritm təsviri daxil edin**
-   Məsələn: "İstifadəçidən alınan ədədin cüt və ya tək olduğunu yoxlayıb nəticəni MySQL verilənlər bazasına yazan proqramın alqoritmi"
+1. **Generasiya rejimini seçin**
+   - **Təsvirə görə:** Alqoritminizi mətn şəklində təsvir etmək üçün bu rejimi seçin.
+   - **Koda görə:** Mövcud kodu blok-sxemə çevirmək üçün bu rejimi seçin.
 
-2. **Proqramlaşdırma dilini seçin**
-   Dropdown menyudan istədiyiniz dili seçin
+2. **Məlumatı daxil edin**
+   - Seçilmiş rejimə uyğun olaraq təsvirinizi və ya kodunuzu mətn qutusuna daxil edin.
 
-3. **Blok-sxem yaradın**
-   "Generasiya et" düyməsini basın
+3. **Proqramlaşdırma dilini seçin**
+   - Dropdown menyudan istədiyiniz dili seçin.
+
+4. **Blok-sxem yaradın**
+   - "Generasiya et" düyməsini basın.
+   - Təsvir rejimində həm blok-sxem, həm də tam kod yaradılacaq.
+
+5. **Nəticəyə baxın**
+   - **Blok-sxem:** Sağ paneldə göstərilir.
+   - **Kod:** Sol paneldə, tarixçənin altında yeni bir bölmədə göstərilir (yalnız təsvir rejimində).
 
 4. **İnteraktiv xüsusiyyətlərdən istifadə edin**
 
