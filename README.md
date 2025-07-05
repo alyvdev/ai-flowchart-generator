@@ -172,13 +172,6 @@ Bu layihə MIT Lisenziyası altında paylaşılır. Ətraflı məlumat üçün [
 
 Ali Aliyev - [@alyvdev](https://github.com/alyvdev)
 
-## Təşəkkürlər
-
-- [Google Gemini AI](https://ai.google.dev/) - AI API
-- [Mermaid.js](https://mermaid.js.org/) - Diaqram kitabxanası
-- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
-- [SVG Pan Zoom](https://github.com/bumbu/svg-pan-zoom) - İnteraktiv zoom
-
 ## Əlaqə
 
 - Email: alyvdev@gmail.com
